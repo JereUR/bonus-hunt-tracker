@@ -6,7 +6,7 @@ const initialState = {
   password: ''
 }
 
-export default function LoginForm() {
+export default function LoginForm({ setActive }) {
   const [inputState, setInputState] = useState(initialState)
   const [classNameEmail, setClassNameEmail] = useState(false)
   const [classNamePassword, setClassNamePassword] = useState(false)
@@ -43,7 +43,6 @@ export default function LoginForm() {
 
   return (
     <LoginFormStyled>
-      <p>Login</p>
       <form>
         <div className="user-box">
           <input
@@ -77,11 +76,8 @@ export default function LoginForm() {
           Iniciar Sesión
         </button>
       </form>
-      <p>
-        No tienes cuenta?{' '}
-        <a href="#" className="a2">
-          Regístrate!
-        </a>
+      <p className="signup">
+        No tienes cuenta? <p className="a2">Regístrate!</p>
       </p>
     </LoginFormStyled>
   )
@@ -262,12 +258,20 @@ const LoginFormStyled = styled.div`
     animation-delay: 1.125s;
   }
 
+  .signup {
+    display: flex;
+    justify-content: center;
+    margin-bottom: -25px;
+  }
+
   p:last-child {
     color: #aaa;
     font-size: 14px;
   }
 
   p.a2 {
+    cursor: pointer;
+    margin-left: 5px;
     color: #fff;
     text-decoration: none;
   }

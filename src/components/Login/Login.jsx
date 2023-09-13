@@ -5,7 +5,7 @@ import { githubIcon, googleIcon } from '../../utils/Icons'
 export default function Login({ setActive }) {
   return (
     <LoginStyled>
-      <LoginForm />
+      <LoginForm setActive={setActive} />
       <div className="separator">
         <hr className="continuous-line" />
         <span>o</span>
@@ -80,7 +80,7 @@ const LoginStyled = styled.div`
     display: flex;
     align-items: center;
     text-align: center;
-    margin: 10px 0;
+    margin: 20px 0;
   }
 
   .continuous-line {
