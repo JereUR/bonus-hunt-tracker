@@ -27,7 +27,7 @@ export default function Orb() {
     margin-top: -35vh;
     background: linear-gradient(180deg, #eb1717 0%, #6933e7 100%);
     filter: blur(400px);
-    animation: ${moveOrb} 10s alternate linear infinite;
+    animation: ${moveOrb} 15s alternate linear infinite;
   `
 
   return <OrbStyled width={width} height={height} />
