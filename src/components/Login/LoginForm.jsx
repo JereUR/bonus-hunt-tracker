@@ -13,23 +13,31 @@ export default function LoginForm({ setActive }) {
 
   const { email, password } = inputState
 
-  const handleEmailFocus = () => {
-    setClassNameEmail(true)
-  }
-
-  const handleEmailBlur = () => {
-    if (email === '') {
-      setClassNameEmail(false)
+  const handleFocus = (name) => {
+    switch (name) {
+      case 'email':
+        setClassNameEmail(true)
+        break
+      case 'password':
+        setClassNamePassword(true)
+        break
     }
   }
 
-  const handlePasswordFocus = () => {
-    setClassNamePassword(true)
-  }
-
-  const handlePasswordBlur = () => {
-    if (password === '') {
-      setClassNamePassword(false)
+  const handleBlur = (name) => {
+    switch (name) {
+      case 'email':
+        if (email === '') {
+          setClassNameEmail(false)
+        }
+        break
+      case 'password':
+        if (password === '') {
+          setClassNamePassword(false)
+        }
+        break
+      default:
+        break
     }
   }
 
@@ -47,8 +55,8 @@ export default function LoginForm({ setActive }) {
         <div className="user-box">
           <input
             className={classNameEmail ? 'focus' : ''}
-            onFocus={handleEmailFocus}
-            onBlur={handleEmailBlur}
+            onFocus={() => handleFocus('email')}
+            onBlur={() => handleBlur('email')}
             value={email}
             name="email"
             type="text"
@@ -59,14 +67,14 @@ export default function LoginForm({ setActive }) {
         <div className="user-box">
           <input
             className={classNamePassword ? 'focus' : ''}
-            onFocus={handlePasswordFocus}
-            onBlur={handlePasswordBlur}
+            onFocus={() => handleFocus('password')}
+            onBlur={() => handleBlur('password')}
             value={password}
             name="password"
             type="password"
             onChange={handleChange}
           />
-          <label>Password</label>
+          <label>Contraseña</label>
         </div>
         <button>
           <span></span>
@@ -77,7 +85,10 @@ export default function LoginForm({ setActive }) {
         </button>
       </form>
       <p className="signup">
-        No tienes cuenta? <p className="a2">Regístrate!</p>
+        No tienes cuenta?{' '}
+        <p className="a2" onClick={() => setActive(1)}>
+          Regístrate!
+        </p>
       </p>
     </LoginFormStyled>
   )

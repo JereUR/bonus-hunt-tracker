@@ -1,10 +1,13 @@
 import styled from 'styled-components'
+
+import logo from '../../assets/logo.png'
 import LoginForm from './LoginForm'
 import { githubIcon, googleIcon } from '../../utils/Icons'
 
 export default function Login({ setActive }) {
   return (
     <LoginStyled>
+      <img src={logo} alt="logo" />
       <LoginForm setActive={setActive} />
       <div className="separator">
         <hr className="continuous-line" />
@@ -67,7 +70,8 @@ const LoginStyled = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 400px;
+  width: 500px;
+  height: 80vh;
   padding: 40px;
   margin: 20px auto;
   transform: translate(-50%, -55%);
@@ -75,6 +79,18 @@ const LoginStyled = styled.div`
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
   border-radius: 10px;
+
+  img {
+    width: 400px;
+    margin-bottom: 30px;
+  }
+
+  .button-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 
   .separator {
     display: flex;
