@@ -52,3 +52,5 @@ export const arrowBack = (
     ></path>
   </svg>
 )
+
+export const lockIcon = <i className="ti ti-lock-check"></i>
