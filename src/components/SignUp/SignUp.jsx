@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styled, { keyframes } from 'styled-components'
 
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo2.png'
 import { arrowBack } from '../../utils/Icons'
 
 const initialState = {
@@ -37,7 +37,7 @@ export default function SignUp({ setActive }) {
       case 'password':
         setClassNamePassword(true)
         break
-      case 'password-confirm':
+      case 'confirmPassword':
         setClassNamePasswordConfirm(true)
         break
     }
@@ -65,7 +65,7 @@ export default function SignUp({ setActive }) {
           setClassNamePassword(false)
         }
         break
-      case 'password-confirm':
+      case 'confirmPassword':
         if (confirmPassword === '') {
           setClassNamePasswordConfirm(false)
         }
@@ -93,8 +93,8 @@ export default function SignUp({ setActive }) {
         <div className="user-box">
           <input
             className={classNameName ? 'focus' : ''}
-            onFocus={() => handleFocus('name')}
-            onBlur={() => handleBlur('name')}
+            onFocus={({ target }) => handleFocus(target.name)}
+            onBlur={({ target }) => handleBlur(target.name)}
             value={name}
             name="name"
             type="text"
@@ -105,8 +105,8 @@ export default function SignUp({ setActive }) {
         <div className="user-box">
           <input
             className={classNameUsername ? 'focus' : ''}
-            onFocus={() => handleFocus('username')}
-            onBlur={() => handleBlur('username')}
+            onFocus={({ target }) => handleFocus(target.name)}
+            onBlur={({ target }) => handleBlur(target.name)}
             value={username}
             name="username"
             type="text"
@@ -117,8 +117,8 @@ export default function SignUp({ setActive }) {
         <div className="user-box">
           <input
             className={classNameEmail ? 'focus' : ''}
-            onFocus={() => handleFocus('email')}
-            onBlur={() => handleBlur('email')}
+            onFocus={({ target }) => handleFocus(target.name)}
+            onBlur={({ target }) => handleBlur(target.name)}
             value={email}
             name="email"
             type="text"
@@ -129,8 +129,8 @@ export default function SignUp({ setActive }) {
         <div className="user-box">
           <input
             className={classNamePassword ? 'focus' : ''}
-            onFocus={() => handleFocus('password')}
-            onBlur={() => handleBlur('password')}
+            onFocus={({ target }) => handleFocus(target.name)}
+            onBlur={({ target }) => handleBlur(target.name)}
             value={password}
             name="password"
             type="password"
@@ -141,8 +141,8 @@ export default function SignUp({ setActive }) {
         <div className="user-box">
           <input
             className={classNamePasswordConfirm ? 'focus' : ''}
-            onFocus={() => handleFocus('password-confirm')}
-            onBlur={() => handleBlur('password-confirm')}
+            onFocus={({ target }) => handleFocus(target.name)}
+            onBlur={({ target }) => handleBlur(target.name)}
             value={confirmPassword}
             name="confirmPassword"
             type="password"
@@ -244,14 +244,15 @@ const LoginFormStyled = styled.div`
   border-radius: 10px;
 
   img {
-    width: 400px;
+    width: 250px;
+    padding: 30px 10px;
   }
 
   .img-container {
+    max-width: 300px;
     display: flex;
     justify-content: center;
     margin: auto;
-    width: 300px;
     border-radius: 20px;
     border: 1px solid var(--primary-color2);
     background: rgba(235, 227, 238, 0.78);
@@ -300,7 +301,7 @@ const LoginFormStyled = styled.div`
     top: -20px;
     left: 0;
     color: var(--primary-color2);
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .user-box .focus {

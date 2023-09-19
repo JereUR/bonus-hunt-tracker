@@ -6,7 +6,7 @@ import SignUp from './components/SignUp/SignUp'
 import Home from './components/Home/Home'
 
 export default function App() {
-  const [active, setActive] = useState(0)
+  const [active, setActive] = useState(2)
 
   const displayData = () => {
     switch (active) {

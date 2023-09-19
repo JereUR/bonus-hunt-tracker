@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo2.png'
 import LoginForm from './LoginForm'
 import { githubIcon, googleIcon } from '../../utils/Icons'
 
@@ -85,14 +85,15 @@ const LoginStyled = styled.div`
   border-radius: 10px;
 
   img {
-    width: 400px;
+    width: 250px;
+    padding: 30px 10px;
   }
 
   .img-container {
+    max-width: 300px;
     display: flex;
     justify-content: center;
     margin: 30px auto;
-    width: 300px;
     border-radius: 20px;
     border: 1px solid var(--primary-color2);
     background: rgba(235, 227, 238, 0.78);

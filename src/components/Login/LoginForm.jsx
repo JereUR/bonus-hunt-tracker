@@ -55,8 +55,8 @@ export default function LoginForm({ setActive }) {
         <div className="user-box">
           <input
             className={classNameEmail ? 'focus' : ''}
-            onFocus={() => handleFocus('email')}
-            onBlur={() => handleBlur('email')}
+            onFocus={({ target }) => handleFocus(target.name)}
+            onBlur={({ target }) => handleBlur(target.name)}
             value={email}
             name="email"
             type="text"
@@ -67,8 +67,8 @@ export default function LoginForm({ setActive }) {
         <div className="user-box">
           <input
             className={classNamePassword ? 'focus' : ''}
-            onFocus={() => handleFocus('password')}
-            onBlur={() => handleBlur('password')}
+            onFocus={({ target }) => handleFocus(target.name)}
+            onBlur={({ target }) => handleBlur(target.name)}
             value={password}
             name="password"
             type="password"
@@ -179,7 +179,7 @@ const LoginFormStyled = styled.div`
     top: -20px;
     left: 0;
     color: var(--primary-color2);
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .user-box .focus {
