@@ -3,6 +3,7 @@ import { useWindowSize } from '../../utils/useWindowSize'
 
 export default function Orb() {
   const { width, height } = useWindowSize()
+  console.log(width, height)
 
   const moveOrb = keyframes`
     0% {

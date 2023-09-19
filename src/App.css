@@ -3,4 +3,9 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+
+  --button-text-color: #161616;
+  --primary-color: rgb(166, 11, 238);
+  --primary-color2: rgba(166, 11, 238, 0.8);
+  --primary-color3: rgba(166, 11, 238, 0.6);
 }

@@ -86,7 +86,9 @@ export default function SignUp({ setActive }) {
       <ButtonBack onClick={() => setActive(0)}>
         {arrowBack} <span>Volver</span>
       </ButtonBack>
-      <img src={logo} alt="logo" />
+      <div className="img-container">
+        <img src={logo} alt="logo" />
+      </div>
       <form>
         <div className="user-box">
           <input
@@ -210,7 +212,6 @@ const ButtonBack = styled.button`
   position: absolute;
   top: 5%;
   left: 6%;
-  color: var(--primary-color2);
   transition: all 0.3s ease-in-out;
 
   span {
@@ -237,12 +238,24 @@ const LoginFormStyled = styled.div`
   margin: 20px auto;
   transform: translate(-50%, -55%);
   background: rgba(0, 0, 0, 0.9);
+  border: 1px solid var(--primary-color3);
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
   border-radius: 10px;
 
   img {
     width: 400px;
+  }
+
+  .img-container {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    width: 300px;
+    border-radius: 20px;
+    border: 1px solid var(--primary-color2);
+    background: rgba(235, 227, 238, 0.78);
+    backdrop-filter: blur(4.5px);
     margin-bottom: 30px;
   }
 
@@ -286,19 +299,24 @@ const LoginFormStyled = styled.div`
   .user-box .focus ~ label {
     top: -20px;
     left: 0;
-    color: #fff;
+    color: var(--primary-color2);
     font-size: 12px;
+  }
+
+  .user-box .focus {
+    border-bottom: 1px solid var(--primary-color);
+    color: var(--primary-color);
   }
 
   .register-btn {
     position: relative;
     display: inline-block;
-    padding: 10px 20px;
+    padding: 15px 20px;
     font-weight: bold;
     background: transparent;
     cursor: pointer;
     border: none;
-    color: #fff;
+    color: var(--primary-color);
     font-size: 16px;
     text-decoration: none;
     text-transform: uppercase;
@@ -313,7 +331,7 @@ const LoginFormStyled = styled.div`
       width: 0%;
       height: 100%;
       position: absolute;
-      background-color: #fff;
+      background-color: var(--primary-color);
       left: 0;
       top: 0;
       z-index: -1;
@@ -321,8 +339,8 @@ const LoginFormStyled = styled.div`
     }
 
     &:hover {
-      color: #272727;
       border-radius: 5px;
+      color: #fff;
     }
 
     &:hover::before {
@@ -342,7 +360,7 @@ const LoginFormStyled = styled.div`
       left: -100%;
       width: 100%;
       height: 2px;
-      background: linear-gradient(90deg, transparent, #fff);
+      background: linear-gradient(90deg, transparent, var(--primary-color));
       animation: ${btnAnim1} 1.5s linear infinite;
     }
 
@@ -351,7 +369,7 @@ const LoginFormStyled = styled.div`
       left: -100%;
       width: 100%;
       height: 2px;
-      background: linear-gradient(90deg, transparent, #fff);
+      background: linear-gradient(90deg, transparent, var(--primary-color));
       animation: ${btnAnim1} 1.5s linear infinite;
     }
 
@@ -360,7 +378,7 @@ const LoginFormStyled = styled.div`
       right: 0;
       width: 2px;
       height: 100%;
-      background: linear-gradient(180deg, transparent, #fff);
+      background: linear-gradient(180deg, transparent, var(--primary-color));
       animation: ${btnAnim2} 1.5s linear infinite;
       animation-delay: 0.375s;
     }
@@ -370,7 +388,7 @@ const LoginFormStyled = styled.div`
       right: -100%;
       width: 100%;
       height: 2px;
-      background: linear-gradient(270deg, transparent, #fff);
+      background: linear-gradient(270deg, transparent, var(--primary-color));
       animation: ${btnAnim3} 1.5s linear infinite;
       animation-delay: 0.75s;
     }
@@ -380,7 +398,7 @@ const LoginFormStyled = styled.div`
       left: 0;
       width: 2px;
       height: 100%;
-      background: linear-gradient(360deg, transparent, #fff);
+      background: linear-gradient(360deg, transparent, var(--primary-color));
       animation: ${btnAnim4} 1.5s linear infinite;
       animation-delay: 1.125s;
     }

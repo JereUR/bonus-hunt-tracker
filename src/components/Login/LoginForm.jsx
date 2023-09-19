@@ -86,9 +86,9 @@ export default function LoginForm({ setActive }) {
       </form>
       <p className="signup">
         No tienes cuenta?{' '}
-        <p className="a2" onClick={() => setActive(1)}>
+        <span className="a2" onClick={() => setActive(1)}>
           Regístrate!
-        </p>
+        </span>
       </p>
     </LoginFormStyled>
   )
@@ -178,19 +178,24 @@ const LoginFormStyled = styled.div`
   .user-box .focus ~ label {
     top: -20px;
     left: 0;
-    color: #fff;
+    color: var(--primary-color2);
     font-size: 12px;
+  }
+
+  .user-box .focus {
+    border-bottom: 1px solid var(--primary-color);
+    color: var(--primary-color);
   }
 
   button {
     position: relative;
     display: inline-block;
-    padding: 10px 20px;
+    padding: 15px 20px;
     font-weight: bold;
     background: transparent;
     cursor: pointer;
     border: none;
-    color: #fff;
+    color: var(--primary-color);
     font-size: 16px;
     text-decoration: none;
     text-transform: uppercase;
@@ -206,7 +211,7 @@ const LoginFormStyled = styled.div`
     width: 0%;
     height: 100%;
     position: absolute;
-    background-color: #fff;
+    background-color: var(--primary-color);
     left: 0;
     top: 0;
     z-index: -1;
@@ -214,8 +219,8 @@ const LoginFormStyled = styled.div`
   }
 
   button:hover {
-    color: #272727;
     border-radius: 5px;
+    color: #fff;
   }
 
   button:hover::before {
@@ -235,7 +240,7 @@ const LoginFormStyled = styled.div`
     left: -100%;
     width: 100%;
     height: 2px;
-    background: linear-gradient(90deg, transparent, #fff);
+    background: linear-gradient(90deg, transparent, var(--primary-color));
     animation: ${btnAnim1} 1.5s linear infinite;
   }
 
@@ -244,7 +249,7 @@ const LoginFormStyled = styled.div`
     right: 0;
     width: 2px;
     height: 100%;
-    background: linear-gradient(180deg, transparent, #fff);
+    background: linear-gradient(180deg, transparent, var(--primary-color));
     animation: ${btnAnim2} 1.5s linear infinite;
     animation-delay: 0.375s;
   }
@@ -254,7 +259,7 @@ const LoginFormStyled = styled.div`
     right: -100%;
     width: 100%;
     height: 2px;
-    background: linear-gradient(270deg, transparent, #fff);
+    background: linear-gradient(270deg, transparent, var(--primary-color));
     animation: ${btnAnim3} 1.5s linear infinite;
     animation-delay: 0.75s;
   }
@@ -264,7 +269,7 @@ const LoginFormStyled = styled.div`
     left: 0;
     width: 2px;
     height: 100%;
-    background: linear-gradient(360deg, transparent, #fff);
+    background: linear-gradient(360deg, transparent, var(--primary-color));
     animation: ${btnAnim4} 1.5s linear infinite;
     animation-delay: 1.125s;
   }
@@ -272,7 +277,7 @@ const LoginFormStyled = styled.div`
   .signup {
     display: flex;
     justify-content: center;
-    margin-bottom: -25px;
+    margin-bottom: -5px;
   }
 
   p:last-child {
@@ -280,16 +285,17 @@ const LoginFormStyled = styled.div`
     font-size: 14px;
   }
 
-  p.a2 {
+  .a2 {
     cursor: pointer;
     margin-left: 5px;
     color: #fff;
     text-decoration: none;
+    transition: all 0.3s ease-in-out;
   }
 
-  p.a2:hover {
+  .a2:hover {
     background: transparent;
-    color: #aaa;
+    color: var(--primary-color);
     border-radius: 5px;
   }
 `
