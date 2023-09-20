@@ -79,7 +79,7 @@ const LoginStyled = styled.div`
   margin: 20px auto;
   transform: translate(-50%, -55%);
   background: rgba(0, 0, 0, 0.9);
-  border: 1px solid var(--primary-color3);
+  border: 3px solid var(--primary-color);
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
   border-radius: 10px;
