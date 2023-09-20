@@ -8,7 +8,11 @@
   --primary-color: rgb(166, 11, 238);
   --primary-color2: rgba(166, 11, 238, 0.8);
   --primary-color3: rgba(166, 11, 238, 0.6);
-  --secondary-color: rgb(56, 173, 241);
+  --text-color: rgb(236, 52, 52);
+  --secondary-color: rgb(30, 208, 240);
+  --secondary-color-background: rgb(30, 208, 240, 0.2);
+  --background-home-color: rgba(40, 10, 50, 0.78);
+  --background-default-color: rgba(10, 10, 10, 0.78);
   --check-color: rgb(32, 197, 128);
 }
 
