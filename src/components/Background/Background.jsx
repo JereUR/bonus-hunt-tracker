@@ -10,7 +10,7 @@ const interference = keyframes`
   }
 
   50% {
-    opacity: 0.6;
+    opacity: 0.5;
   }
 
   100% {
