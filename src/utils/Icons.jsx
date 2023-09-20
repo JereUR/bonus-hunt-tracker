@@ -54,3 +54,6 @@ export const arrowBack = (
 )
 
 export const lockIcon = <i className="ti ti-lock-check"></i>
+export const giftIcon = <i className="ti ti-gift"></i>
+export const budgetIcon = <i className="ti ti-moneybag"></i>
+export const coinIcon = <i className="ti ti-coin"></i>
