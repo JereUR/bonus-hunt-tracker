@@ -1,20 +1,50 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 
-import slotIcon from '../../assets/slot-icon.png'
-import { budgetIcon, coinIcon, giftIcon, lockIcon } from '../../utils/Icons'
-import CheckBox from '../../utils/CheckBox'
+import { budgetIcon, giftIcon } from '../../utils/Icons'
+import BudgetForm from './BudgetForm'
+import BonusTable from './BonusTable'
+
+const initialBonusData = {
+  id: '',
+  slotName: '',
+  bet: ''
+}
+
+const data = [
+  {
+    id: 1,
+    name: 'example',
+    bet: '20'
+  },
+  {
+    id: 2,
+    name: 'example 2',
+    bet: '40'
+  }
+]
 
 export default function LeftSide() {
   const [budget, setBudget] = useState('')
   const [classNameBudget, setClassNameBudget] = useState(false)
   const [checked, setChecked] = useState(false)
-  const [bonusList, setBonusList] = useState([])
+  const [bonusList, setBonusList] = useState(data)
+  const [bonusData, setBonusData] = useState(initialBonusData)
+  const [classNameSlotName, setClassNameSlot] = useState(false)
+  const [classNameBet, setClassNameBet] = useState(false)
+
+  const { slotName, bet } = bonusData
 
   const handleFocus = (name) => {
     switch (name) {
       case 'budget':
         setClassNameBudget(true)
+        break
+      case 'slotName':
+        setClassNameSlot(true)
+        break
+      case 'bet':
+        setClassNameBet(true)
         break
     }
   }
@@ -26,7 +56,25 @@ export default function LeftSide() {
           setClassNameBudget(false)
         }
         break
+      case 'slotName':
+        if (slotName === '') {
+          setClassNameSlot(false)
+        }
+        break
+      case 'bet':
+        if (bet === '') {
+          setClassNameBet(false)
+        }
+        break
     }
+  }
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setBonusData({
+      ...bonusData,
+      [name]: value
+    })
   }
 
   return (
@@ -36,48 +84,29 @@ export default function LeftSide() {
           <h3>{budgetIcon} PRESUPUESTO INICIAL</h3>
         </div>
         <form>
-          <div className="budget-form">
-            <div className="input-container">
-              <input
-                className={classNameBudget ? 'focus' : ''}
-                type="number"
-                name="budget"
-                value={budget}
-                onChange={({ target }) => setBudget(target.value)}
-                onFocus={({ target }) => handleFocus(target.name)}
-                onBlur={({ target }) => handleBlur(target.name)}
-                disabled={checked}
-                style={{ opacity: checked ? '1' : '0.7' }}
-              />
-              <p
-                className={classNameBudget ? 'price price-focus' : 'price'}
-                style={{ opacity: checked ? '1' : '0.7' }}
-              >
-                $
-              </p>
-              {checked && <p className="lock-icon">{lockIcon}</p>}
-            </div>
-            <div className="checkbox">
-              <CheckBox checked={checked} setChecked={setChecked} />
-            </div>
-          </div>
+          <BudgetForm
+            classNameBudget={classNameBudget}
+            budget={budget}
+            setBudget={setBudget}
+            handleFocus={handleFocus}
+            handleBlur={handleBlur}
+            checked={checked}
+            setChecked={setChecked}
+          />
           <div className="slots-section">
             <div className="bonus-title">
               <h3>{giftIcon} LISTA DE BONUS</h3>
             </div>
-            <div className="bonus-table">
-              <table>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>
-                      <img src={slotIcon} alt="slot-icon" /> Nombre de Slot
-                    </th>
-                    <th>{coinIcon} Apuesta</th>
-                  </tr>
-                </thead>
-              </table>
-            </div>
+            <BonusTable
+              bonusList={bonusList}
+              classNameSlotName={classNameSlotName}
+              slotName={slotName}
+              handleInputChange={handleInputChange}
+              handleFocus={handleFocus}
+              handleBlur={handleBlur}
+              classNameBet={classNameBet}
+              bet={bet}
+            />
           </div>
         </form>
       </LeftSideStyled>
@@ -89,9 +118,10 @@ const LeftSideStyled = styled.div`
   z-index: 1;
   position: relative;
   flex: 2;
-  background: var(--background-home-color);
-  border: 3px solid var(--primary-color);
+  background: var(--background-default-color);
+  border: 2px solid var(--primary-color);
   border-right-width: 3px;
+  margin-right: 20px;
   backdrop-filter: blur(4.5px);
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -99,12 +129,12 @@ const LeftSideStyled = styled.div`
   overflow-x: hidden;
 
   .budget-title {
-    color: var(--text-color);
+    color: var(--secondary-color);
     width: fit-content;
     margin: 50px auto;
     border-radius: 20px 0 20px 0;
     overflow: hidden;
-    box-shadow: 0px 0px 2px 2px var(--primary-color);
+    box-shadow: 0px 0px 2px 2px var(--secondary-color2);
     background: var(--background-default-color);
     backdrop-filter: blur(4.5px);
 
@@ -119,104 +149,30 @@ const LeftSideStyled = styled.div`
     }
   }
 
-  .budget-form {
+  .slots-section {
     display: flex;
-    justify-content: center;
-    gap: 2rem;
+    flex-direction: column;
+    align-items: 'flex-start';
+    padding: 10px 30px;
 
-    .input-container {
-      position: relative;
-      margin-left: 50px;
+    .bonus-title {
+      color: var(--secondary-color);
+      width: fit-content;
+      margin: 20px auto 50px auto;
+      border-radius: 20px 0 20px 0;
+      overflow: hidden;
+      box-shadow: 0px 0px 2px 2px var(--secondary-color2);
+      background: var(--background-default-color);
+      backdrop-filter: blur(4.5px);
 
-      .lock-icon {
-        position: absolute;
-        top: -20px;
-        left: 10px;
-        font-size: 24px;
-      }
+      h3 {
+        padding: 10px 30px;
+        margin: 0;
 
-      .price {
-        position: absolute;
-        top: -20px;
-        left: 70px;
-        font-size: 24px;
-      }
-
-      .price-focus {
-        color: var(--secondary-color);
-      }
-
-      input {
-        text-align: center;
-        padding: 10px 0;
-        font-size: 24px;
-        width: 100%;
-        color: #fff;
-        margin-bottom: 30px;
-        border: none;
-        border-bottom: 1px solid #fff;
-        outline: none;
-        background: transparent;
-      }
-
-      .focus {
-        border-bottom: 1px solid var(--secondary-color);
-        color: var(--secondary-color);
-      }
-
-      i {
-        color: var(--check-color);
-      }
-    }
-
-    .checkbox {
-      margin-top: 20px;
-    }
-  }
-
-  .bonus-title {
-    color: var(--text-color);
-    width: fit-content;
-    margin: 20px auto 50px auto;
-    border-radius: 20px 0 20px 0;
-    overflow: hidden;
-    box-shadow: 0px 0px 2px 2px var(--primary-color);
-    background: var(--background-default-color);
-    backdrop-filter: blur(4.5px);
-
-    h3 {
-      padding: 10px 30px;
-      margin: 0;
-
-      i {
-        margin-right: 5px;
-        font-size: 22px;
-      }
-    }
-  }
-
-  .bonus-table {
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    tr {
-      display: flex;
-      justify-content: space-around;
-    }
-
-    th {
-      padding: 20px;
-      font-size: 20px;
-
-      i {
-        margin-right: 5px;
-      }
-
-      img {
-        width: 20px;
-        margin-right: 5px;
+        i {
+          margin-right: 5px;
+          font-size: 22px;
+        }
       }
     }
   }
