@@ -9,34 +9,39 @@ export default function BudgetForm({
   handleFocus,
   handleBlur,
   checked,
-  setChecked
+  setChecked,
+  errorForm
 }) {
   return (
-    <BudgetFormStyled>
-      <div className="input-container">
-        <input
-          className={classNameBudget ? 'focus' : ''}
-          type="number"
-          name="budget"
-          value={budget}
-          onChange={({ target }) => setBudget(target.value)}
-          onFocus={({ target }) => handleFocus(target.name)}
-          onBlur={({ target }) => handleBlur(target.name)}
-          disabled={checked}
-          style={{ opacity: checked ? '1' : '0.7' }}
-        />
-        <p
-          className={classNameBudget ? 'price price-focus' : 'price'}
-          style={{ opacity: checked ? '1' : '0.7' }}
-        >
-          $
-        </p>
-        {checked && <p className="lock-icon">{lockIcon}</p>}
-      </div>
-      <div className="checkbox">
-        <CheckBox checked={checked} setChecked={setChecked} />
-      </div>
-    </BudgetFormStyled>
+    <>
+      <BudgetFormStyled>
+        <div className="input-container">
+          <input
+            className={classNameBudget ? 'focus' : ''}
+            type="number"
+            name="budget"
+            value={budget}
+            onChange={({ target }) => setBudget(target.value)}
+            onFocus={({ target }) => handleFocus(target.name)}
+            onBlur={({ target }) => handleBlur(target.name)}
+            disabled={checked}
+            style={{ opacity: checked ? '1' : '0.7' }}
+          />
+          <p
+            className={classNameBudget ? 'price price-focus' : 'price'}
+            style={{ opacity: checked ? '1' : '0.7' }}
+          >
+            $
+          </p>
+          {checked && <p className="lock-icon">{lockIcon}</p>}
+        </div>
+        <div className="checkbox">
+          <CheckBox checked={checked} setChecked={setChecked} />
+        </div>
+      </BudgetFormStyled>
+      {errorForm.budget && <ErrorText>{errorForm.budget}</ErrorText>}
+      {errorForm.checked && <ErrorText>{errorForm.checked}</ErrorText>}
+    </>
   )
 }
 
@@ -93,4 +98,9 @@ const BudgetFormStyled = styled.div`
   .checkbox {
     margin-top: 20px;
   }
+`
+
+const ErrorText = styled.span`
+  font-size: 12px;
+  color: var(--error-color);
 `
