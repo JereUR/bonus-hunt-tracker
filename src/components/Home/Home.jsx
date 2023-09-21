@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import LeftSide from './LeftSide'
 import RightSide from './RightSide'
 
@@ -14,4 +14,5 @@ export default function Home() {
 const HomeStyled = styled.div`
   display: flex;
   height: 90vh;
+  overflow-y: hidden;
 `

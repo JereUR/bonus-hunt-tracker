@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 import { budgetIcon, giftIcon } from '../../utils/Icons'
 import BudgetForm from './BudgetForm'
@@ -30,7 +30,7 @@ export default function LeftSide() {
   const [checked, setChecked] = useState(false)
   const [bonusList, setBonusList] = useState(data)
   const [bonusData, setBonusData] = useState(initialBonusData)
-  const [classNameSlotName, setClassNameSlot] = useState(false)
+  const [classNameSlotName, setClassNameSlotName] = useState(false)
   const [classNameBet, setClassNameBet] = useState(false)
 
   const { slotName, bet } = bonusData
@@ -41,7 +41,7 @@ export default function LeftSide() {
         setClassNameBudget(true)
         break
       case 'slotName':
-        setClassNameSlot(true)
+        setClassNameSlotName(true)
         break
       case 'bet':
         setClassNameBet(true)
@@ -58,7 +58,7 @@ export default function LeftSide() {
         break
       case 'slotName':
         if (slotName === '') {
-          setClassNameSlot(false)
+          setClassNameSlotName(false)
         }
         break
       case 'bet':
@@ -67,14 +67,6 @@ export default function LeftSide() {
         }
         break
     }
-  }
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setBonusData({
-      ...bonusData,
-      [name]: value
-    })
   }
 
   return (
@@ -99,12 +91,17 @@ export default function LeftSide() {
             </div>
             <BonusTable
               bonusList={bonusList}
+              setBonusList={setBonusList}
               classNameSlotName={classNameSlotName}
+              setClassNameSlotName={setClassNameSlotName}
               slotName={slotName}
-              handleInputChange={handleInputChange}
+              bonusData={bonusData}
+              initialBonusData={initialBonusData}
+              setBonusData={setBonusData}
               handleFocus={handleFocus}
               handleBlur={handleBlur}
               classNameBet={classNameBet}
+              setClassNameBet={setClassNameBet}
               bet={bet}
             />
           </div>
@@ -119,14 +116,12 @@ const LeftSideStyled = styled.div`
   position: relative;
   flex: 2;
   background: var(--background-default-color);
-  border: 2px solid var(--primary-color);
+  border: 3px solid var(--secondary-color);
   border-right-width: 3px;
   margin-right: 20px;
   backdrop-filter: blur(4.5px);
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-  overflow: auto;
   overflow-x: hidden;
+  overflow-y: auto;
 
   .budget-title {
     color: var(--secondary-color);
