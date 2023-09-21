@@ -17,9 +17,10 @@ export default function BonusTable({
   handleBlur,
   classNameBet,
   setClassNameBet,
-  bet
+  bet,
+  errorForm
 }) {
-  const [errorForm, setErrorForm] = useState({})
+  const [errorBonus, setErrorBonus] = useState({})
 
   const generateRandomId = () => {
     const randomNum = Math.floor(Math.random() * 10000)
@@ -54,7 +55,7 @@ export default function BonusTable({
 
   const addBonus = () => {
     const errors = validation()
-    setErrorForm(errors)
+    setErrorBonus(errors)
 
     if (!Object.keys(errors).length) {
       const id = generateRandomId()
@@ -125,10 +126,17 @@ export default function BonusTable({
           </tr>
         </tbody>
       </table>
+      {errorForm.bonusList && <ErrorText>{errorForm.bonusList}</ErrorText>}
       <button type="button" onClick={addBonus} className="button">
         <span className="button__text">Agregar Bonus</span>
         <span className="button__icon">{plusIcon}</span>
       </button>
+      <div>
+        <div>
+          {errorBonus.slotName && <ErrorText>{errorBonus.slotName}</ErrorText>}
+        </div>
+        <div>{errorBonus.bet && <ErrorText>{errorBonus.bet}</ErrorText>}</div>
+      </div>
     </BonusTableStyled>
   )
 }
@@ -205,6 +213,7 @@ const BonusTableStyled = styled.div`
     display: flex;
     align-items: center;
     border: 1px solid #34974d;
+    opacity: 0.9;
     background-color: var(--check-color);
   }
 
@@ -257,4 +266,9 @@ const BonusTableStyled = styled.div`
   .button:active {
     border: 1px solid var(--check-color2);
   }
+`
+
+const ErrorText = styled.span`
+  font-size: 12px;
+  color: var(--error-color);
 `
