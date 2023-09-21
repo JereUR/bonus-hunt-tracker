@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 
 import { budgetIcon, giftIcon } from '../../utils/Icons'
 import BudgetForm from './BudgetForm'
@@ -10,19 +10,6 @@ const initialBonusData = {
   slotName: '',
   bet: ''
 }
-
-const data = [
-  {
-    id: 1,
-    name: 'example',
-    bet: '20'
-  },
-  {
-    id: 2,
-    name: 'example 2',
-    bet: '40'
-  }
-]
 
 export default function LeftSide({ onRun, setOnRun }) {
   const [budget, setBudget] = useState('')
@@ -99,7 +86,9 @@ export default function LeftSide({ onRun, setOnRun }) {
     setErrorForm(errors)
 
     if (!Object.keys(errors).length) {
-      setOnRun(true)
+      if (window.confirm('¿Comenzar Bonus Hunt?')) {
+        setOnRun(true)
+      }
     }
   }
 
