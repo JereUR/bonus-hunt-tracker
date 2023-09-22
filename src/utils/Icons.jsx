@@ -58,3 +58,5 @@ export const giftIcon = <i className="ti ti-gift"></i>
 export const budgetIcon = <i className="ti ti-moneybag"></i>
 export const coinIcon = <i className="ti ti-coin"></i>
 export const plusIcon = <i className="ti ti-plus"></i>
+export const editIcon = <i className="ti ti-edit"></i>
+export const trashIcon = <i className="ti ti-trash-x"></i>
