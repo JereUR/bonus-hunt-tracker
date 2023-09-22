@@ -1,8 +1,8 @@
 import styled from 'styled-components'
+import { useState } from 'react'
 
 import slotIcon from '../../assets/slot-icon.png'
-import { coinIcon, plusIcon } from '../../utils/Icons'
-import { useEffect, useState } from 'react'
+import { coinIcon, editIcon, plusIcon, trashIcon } from '../../utils/Icons'
 
 export default function BonusTable({
   bonusList,
@@ -53,6 +53,20 @@ export default function BonusTable({
     })
   }
 
+  const editData = (el) => {
+    deleteData(el.id)
+
+    document.getElementById('slotName-input').value = el.slotName
+    document.getElementById('bet-input').value = el.bet
+
+    setBonusData({ slotName: el.slotName, bet: el.bet })
+  }
+
+  const deleteData = (id) => {
+    let newData = bonusList.filter((el) => el.id !== id)
+    setBonusList(newData)
+  }
+
   const addBonus = () => {
     const errors = validation()
     setErrorBonus(errors)
@@ -62,7 +76,7 @@ export default function BonusTable({
 
       const data = {
         id,
-        name: slotName,
+        slotName,
         bet
       }
 
@@ -89,8 +103,21 @@ export default function BonusTable({
           {bonusList?.map((item, index) => (
             <tr key={item.id}>
               <td>{index + 1}</td>
-              <td>{item.name}</td>
+              <td>{item.slotName}</td>
               <td>$ {item.bet}</td>
+              <td>
+                <div className="icons-container">
+                  <span className="edit-logo" onClick={() => editData(item)}>
+                    {editIcon}
+                  </span>
+                  <span
+                    className="delete-logo"
+                    onClick={() => deleteData(item.id)}
+                  >
+                    {trashIcon}
+                  </span>
+                </div>
+              </td>
             </tr>
           ))}
           <tr className="bonus-form">
@@ -106,6 +133,7 @@ export default function BonusTable({
                 }
                 type="text"
                 name="slotName"
+                id="slotName-input"
                 value={slotName}
                 onChange={handleInputChange}
                 onFocus={({ target }) => handleFocus(target.name)}
@@ -117,6 +145,7 @@ export default function BonusTable({
                 className={classNameBet ? 'focus' : ''}
                 type="number"
                 name="bet"
+                id="bet-input"
                 value={bet}
                 onChange={handleInputChange}
                 onFocus={({ target }) => handleFocus(target.name)}
@@ -146,6 +175,30 @@ const BonusTableStyled = styled.div`
   border-radius: 10px;
   height: 100%;
   overflow-y: auto;
+
+  .icons-container {
+    span {
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .edit-logo {
+      margin-right: 20px;
+      color: var(--secondary-color2);
+
+      &:hover {
+        color: var(--secondary-color);
+      }
+    }
+
+    .delete-logo {
+      color: var(--error-color2);
+
+      &:hover {
+        color: var(--error-color);
+      }
+    }
+  }
 
   thead,
   tbody {
@@ -185,7 +238,7 @@ const BonusTableStyled = styled.div`
       input {
         text-align: center;
         padding: 10px 0;
-        font-size: 16px;
+        font-size: 20px;
         color: #fff;
         opacity: 0.5;
         margin-bottom: 30px;
