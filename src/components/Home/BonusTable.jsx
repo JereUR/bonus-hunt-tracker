@@ -2,11 +2,11 @@ import styled from 'styled-components'
 import { useState } from 'react'
 
 import slotIcon from '../../assets/slot-icon.png'
-import { coinIcon, editIcon, plusIcon, trashIcon } from '../../utils/Icons'
+import betIcon from '../../assets/bet-icon.png'
+import { editIcon, plusIcon, trashIcon } from '../../utils/Icons'
+import { useGlobalContext } from '../../context/globalContext'
 
 export default function BonusTable({
-  bonusList,
-  setBonusList,
   classNameSlotName,
   setClassNameSlotName,
   slotName,
@@ -21,6 +21,8 @@ export default function BonusTable({
   errorForm
 }) {
   const [errorBonus, setErrorBonus] = useState({})
+
+  const { bonusList, setBonusList, deleteBonusItem } = useGlobalContext()
 
   const generateRandomId = () => {
     const randomNum = Math.floor(Math.random() * 10000)
@@ -54,17 +56,12 @@ export default function BonusTable({
   }
 
   const editData = (el) => {
-    deleteData(el.id)
+    deleteBonusItem(el.id)
 
     document.getElementById('slotName-input').value = el.slotName
     document.getElementById('bet-input').value = el.bet
 
     setBonusData({ slotName: el.slotName, bet: el.bet })
-  }
-
-  const deleteData = (id) => {
-    let newData = bonusList.filter((el) => el.id !== id)
-    setBonusList(newData)
   }
 
   const addBonus = () => {
@@ -96,7 +93,9 @@ export default function BonusTable({
             <th>
               <img src={slotIcon} alt="slot-icon" /> Nombre de Slot
             </th>
-            <th>{coinIcon} Apuesta</th>
+            <th>
+              <img src={betIcon} alt="bet-icon" /> Apuesta
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -112,7 +111,7 @@ export default function BonusTable({
                   </span>
                   <span
                     className="delete-logo"
-                    onClick={() => deleteData(item.id)}
+                    onClick={() => deleteBonusItem(item.id)}
                   >
                     {trashIcon}
                   </span>
