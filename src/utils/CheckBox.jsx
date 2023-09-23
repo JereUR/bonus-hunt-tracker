@@ -1,13 +1,17 @@
 import styled, { keyframes } from 'styled-components'
 
-export default function CheckBox({ checked, setChecked }) {
+export default function CheckBox({
+  checked,
+  setChecked = null,
+  functionClick = null
+}) {
   return (
     <CheckBoxStyled>
       <label className="container">
         <input
           type="checkbox"
           defaultChecked={checked}
-          onClick={() => setChecked(!checked)}
+          onClick={functionClick ? functionClick : () => setChecked(!checked)}
         />
         <div className="checkmark"></div>
         <svg
