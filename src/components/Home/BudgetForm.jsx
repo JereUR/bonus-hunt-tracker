@@ -1,17 +1,18 @@
 import styled from 'styled-components'
 import CheckBox from '../../utils/CheckBox'
 import { lockIcon } from '../../utils/Icons'
+import { useGlobalContext } from '../../context/globalContext'
 
 export default function BudgetForm({
   classNameBudget,
-  budget,
-  setBudget,
   handleFocus,
   handleBlur,
   checked,
   setChecked,
   errorForm
 }) {
+  const { budget, setBudget } = useGlobalContext()
+
   return (
     <>
       <BudgetFormStyled>
