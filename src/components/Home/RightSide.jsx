@@ -1,58 +1,11 @@
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
+import { useGlobalContext } from '../../context/globalContext'
 
 export default function RightSide() {
-  return (
-    <RightSideStyled>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>RigthSide
-    </RightSideStyled>
-  )
+  const { budget, bonusList, onRun } = useGlobalContext()
+
+  return <RightSideStyled>{budget}</RightSideStyled>
 }
-
-const anim1 = keyframes`
-  0% {
-    left: -100%;
-  }
-
-  50%,100% {
-    left: 100%;
-  }
-`
-
-const anim2 = keyframes`
-  0% {
-    top: -100%;
-  }
-
-  50%,
-  100% {
-    top: 100%;
-  }
-`
-
-const anim3 = keyframes`
-  0% {
-    right: -100%;
-  }
-
-  50%,
-  100% {
-    right: 100%;
-  }
-`
-
-const anim4 = keyframes`
-  0% {
-    bottom: -100%;
-  }
-
-  50%,
-  100% {
-    bottom: 100%;
-  }
-`
 
 const RightSideStyled = styled.div`
   flex: 1;

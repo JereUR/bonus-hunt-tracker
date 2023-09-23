@@ -4,85 +4,25 @@ import styled from 'styled-components'
 import { budgetIcon, giftIcon } from '../../utils/Icons'
 import BudgetForm from './BudgetForm'
 import BonusTable from './BonusTable'
+import { useGlobalContext } from '../../context/globalContext'
+import StartingBonusTable from './StartingBonusTable'
 
 const initialBonusData = {
   id: '',
   slotName: '',
-  bet: ''
+  bet: '',
+  win: null
 }
 
-const data = [
-  {
-    id: 'bonus_1000',
-    slotName: 'Slot 1',
-    bet: '30'
-  },
-  {
-    id: 'bonus_2000',
-    slotName: 'Slot 2',
-    bet: '40'
-  },
-  {
-    id: 'bonus_3000',
-    slotName: 'Slot 3',
-    bet: '50'
-  },
-  {
-    id: 'bonus_4000',
-    slotName: 'Slot 4',
-    bet: '30'
-  },
-  {
-    id: 'bonus_5000',
-    slotName: 'Slot 5',
-    bet: '80'
-  },
-  {
-    id: 'bonus_6000',
-    slotName: 'Slot 6',
-    bet: '60'
-  },
-  {
-    id: 'bonus_7000',
-    slotName: 'Slot 7',
-    bet: '70'
-  },
-  {
-    id: 'bonus_8000',
-    slotName: 'Slot 8',
-    bet: '80'
-  },
-  {
-    id: 'bonus_9000',
-    slotName: 'Slot 9',
-    bet: '90'
-  },
-  {
-    id: 'bonus_1100',
-    slotName: 'Slot 10',
-    bet: '130'
-  },
-  {
-    id: 'bonus_1200',
-    slotName: 'Slot 11',
-    bet: '40'
-  },
-  {
-    id: 'bonus_1300',
-    slotName: 'Slot 12',
-    bet: '50'
-  }
-]
-
-export default function LeftSide({ onRun, setOnRun }) {
-  const [budget, setBudget] = useState('')
+export default function LeftSide() {
   const [classNameBudget, setClassNameBudget] = useState(false)
   const [checked, setChecked] = useState(false)
-  const [bonusList, setBonusList] = useState(data)
   const [bonusData, setBonusData] = useState(initialBonusData)
   const [classNameSlotName, setClassNameSlotName] = useState(false)
   const [classNameBet, setClassNameBet] = useState(false)
   const [errorForm, setErrorForm] = useState({})
+
+  const { budget, bonusList, onRun, setOnRun } = useGlobalContext()
 
   const { slotName, bet } = bonusData
 
@@ -166,8 +106,6 @@ export default function LeftSide({ onRun, setOnRun }) {
             <form onSubmit={handleSubmit}>
               <BudgetForm
                 classNameBudget={classNameBudget}
-                budget={budget}
-                setBudget={setBudget}
                 handleFocus={handleFocus}
                 handleBlur={handleBlur}
                 checked={checked}
@@ -179,8 +117,6 @@ export default function LeftSide({ onRun, setOnRun }) {
                   <h3>{giftIcon} LISTA DE BONUS</h3>
                 </div>
                 <BonusTable
-                  bonusList={bonusList}
-                  setBonusList={setBonusList}
                   classNameSlotName={classNameSlotName}
                   setClassNameSlotName={setClassNameSlotName}
                   slotName={slotName}
@@ -199,7 +135,11 @@ export default function LeftSide({ onRun, setOnRun }) {
             </form>
           </>
         ) : (
-          <>Hola</>
+          <StartingBonusTable
+            handleFocus={handleFocus}
+            handleBlur={handleBlur}
+            bonusList={bonusList}
+          />
         )}
       </LeftSideStyled>
     </>
