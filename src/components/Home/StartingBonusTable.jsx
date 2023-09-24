@@ -7,13 +7,11 @@ import { coinIcon, winIcon } from '../../utils/Icons'
 import { useGlobalContext } from '../../context/globalContext'
 import CheckBox from '../../utils/CheckBox'
 
-export default function StartingBonusTable({
-  handleFocus,
-  handleBlur,
-  bonusList
-}) {
+export default function StartingBonusTable({ bonusList }) {
   const [winInputs, setWinInputs] = useState(bonusList.map(() => ''))
-  const [errorWins, setErrorWins] = useState(bonusList.map(() => ({})))
+  const [errorWins, setErrorWins] = useState(bonusList.map(() => null))
+  const [checkedWins, setCheckedWins] = useState(bonusList.map(() => false))
+  const [classNameWins, setClassNameWins] = useState(bonusList.map(() => false))
 
   const { updateWin } = useGlobalContext()
 
@@ -21,14 +19,28 @@ export default function StartingBonusTable({
     let error = ''
 
     if (winInputs[index] === '') {
-      error = 'Debe ingresar un valor.'
+      error = 'La recompensa no puede ser vacia.'
     }
 
     if (winInputs[index] < 0) {
-      error = 'El monto debe ser mayor a 0'
+      error = 'La recompensa no puede ser negativa'
     }
 
     return error
+  }
+
+  const handleFocus = (event) => {
+    const index = event.target.name.split('-')[1]
+    const classChange = [...classNameWins]
+    classChange[index] = true
+    setClassNameWins(classChange)
+  }
+
+  const handleBlur = (event) => {
+    const index = event.target.name.split('-')[1]
+    const classChange = [...classNameWins]
+    classChange[index] = false
+    setClassNameWins(classChange)
   }
 
   const handleWinInputChange = (index, value) => {
@@ -38,15 +50,24 @@ export default function StartingBonusTable({
   }
 
   const addWin = (index) => {
+    const newCkeckedWins = [...checkedWins]
+    newCkeckedWins[index] = !newCkeckedWins[index]
+    setCheckedWins(newCkeckedWins)
+
     const errors = [...errorWins]
     const newError = validation(index)
     errors[index] = newError
     setErrorWins(errors)
 
     if (!Object.keys(newError).length) {
+      const errors = [...errorWins]
+      errors[index] = null
+      setErrorWins(errors)
       updateWin()
     }
   }
+
+  console.log(classNameWins)
 
   return (
     <Container>
@@ -61,8 +82,8 @@ export default function StartingBonusTable({
               <th>
                 <img src={betIcon} alt="slot-icon" /> Apuesta
               </th>
-              <th>{winIcon} Win</th>
-              <th>{coinIcon} x Win</th>
+              <th>{winIcon} Recompensa</th>
+              <th className="small-column">{coinIcon} Cuota</th>
             </tr>
           </thead>
           <tbody>
@@ -74,6 +95,7 @@ export default function StartingBonusTable({
                 <td className="input-win">
                   <div className="input-container">
                     <input
+                      className={classNameWins[index] ? 'focused' : ''}
                       type="number"
                       name={`winInput-${index}`}
                       id={`win-input-${index}`}
@@ -81,16 +103,28 @@ export default function StartingBonusTable({
                       onChange={({ target }) =>
                         handleWinInputChange(index, target.value)
                       }
-                      onFocus={({ target }) => handleFocus(target.name)}
-                      onBlur={({ target }) => handleBlur(target.name)}
+                      onFocus={handleFocus}
+                      onBlur={handleBlur}
+                      disabled={checkedWins[index]}
                     />
                     <div className="checkbox">
                       <CheckBox
-                        checked={item.win !== null}
+                        checked={checkedWins[index]}
                         functionClick={() => addWin(index)}
                       />
                     </div>
                   </div>
+                  {errorWins[index] && (
+                    <ErrorText>{errorWins[index]}</ErrorText>
+                  )}
+                </td>
+                <td>
+                  {checkedWins[index] &&
+                    errorWins[index] === null &&
+                    (winInputs[index] === 0
+                      ? 'x 0'
+                      : 'x ' +
+                        parseFloat((winInputs[index] / item.bet).toFixed(2)))}
                 </td>
               </tr>
             ))}
@@ -114,6 +148,10 @@ const BonusTableStyled = styled.div`
   thead,
   tbody {
     flex: 1;
+
+    .small-column {
+      width: 8%;
+    }
   }
 
   table {
@@ -137,6 +175,20 @@ const BonusTableStyled = styled.div`
 
   .input-container {
     display: flex;
+    justify-content: center;
+
+    input {
+      padding: 8px;
+      border-radius: 5px;
+      border: 2px solid var(--primary-color3);
+      background-color: var(--background-home-color);
+      font-size: 16px;
+      width: 100%;
+
+      &.focused {
+        border: 2px solid var(--primary-color) !important;
+      }
+    }
   }
 
   .checkbox {
@@ -145,6 +197,7 @@ const BonusTableStyled = styled.div`
 `
 
 const ErrorText = styled.p`
+  text-align: left;
   font-size: 12px;
   color: var(--error-color);
 `
