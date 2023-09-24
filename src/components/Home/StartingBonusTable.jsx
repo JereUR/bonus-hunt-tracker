@@ -1,9 +1,9 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { useState } from 'react'
 
 import slotIcon from '../../assets/slot-icon.png'
 import betIcon from '../../assets/bet-icon.png'
-import { coinIcon, winIcon } from '../../utils/Icons'
+import { coinIcon, targetIcon, winIcon } from '../../utils/Icons'
 import { useGlobalContext } from '../../context/globalContext'
 import CheckBox from '../../utils/CheckBox'
 
@@ -67,10 +67,14 @@ export default function StartingBonusTable({ bonusList }) {
     }
   }
 
-  console.log(classNameWins)
-
   return (
     <Container>
+      <h1>Lista de Bonus</h1>
+      <h3>
+        {targetIcon}
+        Let the hunt begin
+        {targetIcon}
+      </h3>
       <BonusTableStyled>
         <table>
           <thead>
@@ -131,12 +135,174 @@ export default function StartingBonusTable({ bonusList }) {
           </tbody>
         </table>
       </BonusTableStyled>
+      <ButtonStyled>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Finalizar
+      </ButtonStyled>
     </Container>
   )
 }
 
+const btnAnim1 = keyframes`
+  0% {
+    left: -100%;
+  }
+
+  50%,100% {
+    left: 100%;
+  }
+`
+
+const btnAnim2 = keyframes`
+  0% {
+    top: -100%;
+  }
+
+  50%,
+  100% {
+    top: 100%;
+  }
+`
+
+const btnAnim3 = keyframes`
+  0% {
+    right: -100%;
+  }
+
+  50%,
+  100% {
+    right: 100%;
+  }
+`
+
+const btnAnim4 = keyframes`
+  0% {
+    bottom: -100%;
+  }
+
+  50%,
+  100% {
+    bottom: 100%;
+  }
+`
+
+const ButtonStyled = styled.button`
+  position: relative;
+  display: inline-block;
+  padding: 15px 20px;
+  width: 40%;
+  font-weight: bold;
+  background: transparent;
+  cursor: pointer;
+  border: none;
+  color: var(--primary-color2);
+  font-size: 16px;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: 0.5s;
+  margin: 50px 0;
+  letter-spacing: 3px;
+  transition: all 0.4s ease-in-out;
+
+  &::before {
+    content: '';
+    width: 0%;
+    height: 100%;
+    position: absolute;
+    background-color: var(--primary-color2);
+    left: 0;
+    top: 0;
+    z-index: -1;
+    transition: 0.4s ease-in-out;
+  }
+
+  &:hover {
+    border-radius: 5px;
+    color: #000;
+  }
+
+  &:hover::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+  }
+
+  span {
+    position: absolute;
+    display: block;
+  }
+
+  span:nth-child(1) {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-color2));
+    animation: ${btnAnim1} 1.5s linear infinite;
+  }
+
+  span:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, var(--primary-color2));
+    animation: ${btnAnim2} 1.5s linear infinite;
+    animation-delay: 0.375s;
+  }
+
+  span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(270deg, transparent, var(--primary-color2));
+    animation: ${btnAnim3} 1.5s linear infinite;
+    animation-delay: 0.75s;
+  }
+
+  span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, var(--primary-color2));
+    animation: ${btnAnim4} 1.5s linear infinite;
+    animation-delay: 1.125s;
+  }
+`
+
 const Container = styled.div`
   padding: 20px;
+
+  h1 {
+    color: var(--secondary-color);
+    font-size: 42px;
+    margin-bottom: -5px;
+    text-shadow: 2px 2px 4px var(--primary-color);
+  }
+
+  h3 {
+    color: var(--primary-color);
+    margin-bottom: 3vw;
+
+    i {
+      font-size: 28px;
+    }
+
+    i:first-child {
+      margin-right: 10px;
+    }
+
+    i:nth-child(2) {
+      margin-left: 10px;
+    }
+  }
 `
 
 const BonusTableStyled = styled.div`
@@ -179,25 +345,30 @@ const BonusTableStyled = styled.div`
 
     input {
       padding: 8px;
+      font-weight: bold;
       border-radius: 5px;
-      border: 2px solid var(--primary-color3);
+      border: 2px solid var(--secondary-color3);
       background-color: var(--background-home-color);
-      font-size: 16px;
-      width: 100%;
+      font-size: 18px;
+      width: 40%;
+      text-align: right;
+      color: var(--primary-color);
 
       &.focused {
         border: 2px solid var(--primary-color) !important;
+        color: var(--primary-color2);
       }
     }
   }
 
   .checkbox {
     margin-left: 10px;
+    margin-top: 9px;
   }
 `
 
 const ErrorText = styled.p`
-  text-align: left;
+  margin-right: 30px;
   font-size: 12px;
   color: var(--error-color);
 `
