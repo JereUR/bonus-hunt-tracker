@@ -61,3 +61,4 @@ export const plusIcon = <i className="ti ti-plus"></i>
 export const editIcon = <i className="ti ti-edit"></i>
 export const trashIcon = <i className="ti ti-trash-x"></i>
 export const winIcon = <i className="ti ti-award-filled"></i>
+export const targetIcon = <i className="ti ti-target-arrow"></i>
