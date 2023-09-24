@@ -135,11 +135,7 @@ export default function LeftSide() {
             </form>
           </>
         ) : (
-          <StartingBonusTable
-            handleFocus={handleFocus}
-            handleBlur={handleBlur}
-            bonusList={bonusList}
-          />
+          <StartingBonusTable bonusList={bonusList} />
         )}
       </LeftSideStyled>
     </>
