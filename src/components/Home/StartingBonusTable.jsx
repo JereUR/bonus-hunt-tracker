@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 import slotIcon from '../../assets/slot-icon.png'
 import betIcon from '../../assets/bet-icon.png'
-import { coinIcon, targetIcon, winIcon } from '../../utils/Icons'
+import { arrowBack, coinIcon, targetIcon, winIcon } from '../../utils/Icons'
 import { useGlobalContext } from '../../context/globalContext'
 import CheckBox from '../../utils/CheckBox'
 
@@ -13,7 +13,7 @@ export default function StartingBonusTable({ bonusList }) {
   const [checkedWins, setCheckedWins] = useState(bonusList.map(() => false))
   const [classNameWins, setClassNameWins] = useState(bonusList.map(() => false))
 
-  const { updateWin } = useGlobalContext()
+  const { updateWin, setOnRun } = useGlobalContext()
 
   const validation = (index) => {
     let error = ''
@@ -69,6 +69,9 @@ export default function StartingBonusTable({ bonusList }) {
 
   return (
     <Container>
+      <ButtonBack onClick={() => setOnRun(false)}>
+        {arrowBack} <span>Volver</span>
+      </ButtonBack>
       <h1>Lista de Bonus</h1>
       <h3>
         {targetIcon}
@@ -189,6 +192,29 @@ const btnAnim4 = keyframes`
   }
 `
 
+const ButtonBack = styled.button`
+  cursor: pointer;
+  background: none;
+  border: none;
+  position: absolute;
+  top: 3%;
+  left: 3%;
+  transition: all 0.3s ease-in-out;
+
+  span {
+    position: absolute;
+    top: 17%;
+    font-size: 18px;
+    margin-left: 10px;
+    font-weight: bold;
+  }
+
+  &:hover {
+    transform: scale(1.05);
+    color: var(--primary-color);
+  }
+`
+
 const ButtonStyled = styled.button`
   position: relative;
   display: inline-block;
@@ -198,7 +224,7 @@ const ButtonStyled = styled.button`
   background: transparent;
   cursor: pointer;
   border: none;
-  color: var(--primary-color2);
+  color: var(--primary-color);
   font-size: 16px;
   text-decoration: none;
   text-transform: uppercase;
@@ -213,7 +239,7 @@ const ButtonStyled = styled.button`
     width: 0%;
     height: 100%;
     position: absolute;
-    background-color: var(--primary-color2);
+    background-color: var(--primary-color);
     left: 0;
     top: 0;
     z-index: -1;
@@ -242,7 +268,7 @@ const ButtonStyled = styled.button`
     left: -100%;
     width: 100%;
     height: 2px;
-    background: linear-gradient(90deg, transparent, var(--primary-color2));
+    background: linear-gradient(90deg, transparent, var(--primary-color));
     animation: ${btnAnim1} 1.5s linear infinite;
   }
 
@@ -251,7 +277,7 @@ const ButtonStyled = styled.button`
     right: 0;
     width: 2px;
     height: 100%;
-    background: linear-gradient(180deg, transparent, var(--primary-color2));
+    background: linear-gradient(180deg, transparent, var(--primary-color));
     animation: ${btnAnim2} 1.5s linear infinite;
     animation-delay: 0.375s;
   }
@@ -261,7 +287,7 @@ const ButtonStyled = styled.button`
     right: -100%;
     width: 100%;
     height: 2px;
-    background: linear-gradient(270deg, transparent, var(--primary-color2));
+    background: linear-gradient(270deg, transparent, var(--primary-color));
     animation: ${btnAnim3} 1.5s linear infinite;
     animation-delay: 0.75s;
   }
@@ -271,7 +297,7 @@ const ButtonStyled = styled.button`
     left: 0;
     width: 2px;
     height: 100%;
-    background: linear-gradient(360deg, transparent, var(--primary-color2));
+    background: linear-gradient(360deg, transparent, var(--primary-color));
     animation: ${btnAnim4} 1.5s linear infinite;
     animation-delay: 1.125s;
   }
