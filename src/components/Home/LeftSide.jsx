@@ -227,4 +227,13 @@ const LeftSideStyled = styled.div`
       transform: translate(2px, 2px);
     }
   }
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color3);
+    border-radius: 5px;
+  }
 `

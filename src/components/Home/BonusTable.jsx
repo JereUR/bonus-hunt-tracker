@@ -272,7 +272,7 @@ const BonusTableStyled = styled.div`
   .button,
   .button__icon,
   .button__text {
-    transition: all 0.3s;
+    transition: all 0.4s;
   }
 
   .button .button__text {
@@ -317,6 +317,15 @@ const BonusTableStyled = styled.div`
 
   .button:active {
     border: 1px solid var(--check-color2);
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color3);
+    border-radius: 5px;
   }
 `
 
