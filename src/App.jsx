@@ -6,15 +6,15 @@ import SignUp from './components/SignUp/SignUp'
 import Home from './components/Home/Home'
 
 export default function App() {
-  const [active, setActive] = useState(2)
+  const [active, setActive] = useState('home')
 
   const displayData = () => {
     switch (active) {
-      case 0:
+      case 'login':
         return <Login setActive={setActive} />
-      case 1:
+      case 'signup':
         return <SignUp setActive={setActive} />
-      case 2:
+      case 'home':
         return <Home />
     }
   }

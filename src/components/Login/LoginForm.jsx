@@ -86,7 +86,7 @@ export default function LoginForm({ setActive }) {
       </form>
       <p className="signup">
         No tienes cuenta?{' '}
-        <span className="a2" onClick={() => setActive(1)}>
+        <span className="a2" onClick={() => setActive('signup')}>
           Regístrate!
         </span>
       </p>

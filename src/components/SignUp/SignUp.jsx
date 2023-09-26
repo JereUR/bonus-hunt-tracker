@@ -83,7 +83,7 @@ export default function SignUp({ setActive }) {
 
   return (
     <LoginFormStyled>
-      <ButtonBack onClick={() => setActive(0)}>
+      <ButtonBack onClick={() => setActive('login')}>
         {arrowBack} <span>Volver</span>
       </ButtonBack>
       <div className="img-container">
