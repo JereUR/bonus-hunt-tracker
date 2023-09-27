@@ -9,8 +9,6 @@ export default function RightSide() {
 
   const finalResult = totalWin - budget
 
-  console.log(requiredAvg)
-
   return (
     <RightSideStyled>
       <div className="data-container">
@@ -24,7 +22,7 @@ export default function RightSide() {
       <div className="data-container">
         <h5>REQUIRED AVG :</h5>
         {requiredAvg ? (
-          <p>{requiredAvg <= 0 ? 'Profit' : `x ${requiredAvg}`}</p>
+          <p>{requiredAvg <= 0 ? 'PROFIT' : `x ${requiredAvg}`}</p>
         ) : (
           <p>-</p>
         )}
