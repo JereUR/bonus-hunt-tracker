@@ -9,20 +9,22 @@ export default function RightSide() {
 
   const finalResult = totalWin - budget
 
+  console.log(requiredAvg)
+
   return (
     <RightSideStyled>
       <div className="data-container">
         <h5>START:</h5>
-        <p>{budget ? budget : '-'}</p>
+        <p>{budget ? `$${budget}` : '-'}</p>
       </div>
       <div className="data-container">
         <h5>CURRENT AVG:</h5>
-        <p>{currentAvg ? currentAvg : '-'}</p>
+        <p>{currentAvg ? `x ${currentAvg}` : '-'}</p>
       </div>
       <div className="data-container">
         <h5>REQUIRED AVG :</h5>
         {requiredAvg ? (
-          <p>{requiredAvg <= 0 ? 'Profit' : requiredAvg}</p>
+          <p>{requiredAvg <= 0 ? 'Profit' : `x ${requiredAvg}`}</p>
         ) : (
           <p>-</p>
         )}
@@ -33,20 +35,20 @@ export default function RightSide() {
       </div>
       <div className="data-container">
         <h5>MAX WIN:</h5>
-        <p>{maxWin ? maxWin : '-'}</p>
+        <p>{maxWin ? `$${maxWin}` : '-'}</p>
       </div>
       <div className="data-container">
         <h5>MAX X:</h5>
-        <p>{maxOdd ? maxOdd : '-'}</p>
+        <p>{maxOdd ? `x ${maxOdd}` : '-'}</p>
       </div>
       <div className="data-container">
         <h5>TOTAL WIN:</h5>
-        <p>{totalWin ? totalWin : '-'}</p>
+        <p>{totalWin ? `$${totalWin}` : '-'}</p>
       </div>
       <div className="data-container">
-        <h5>RESULTADO FINAL:</h5>
+        <h5>BALANCE:</h5>
         <p className={finalResult < 0 ? 'loss' : 'profit'}>
-          {finalResult > 0 ? `+ ${finalResult}` : finalResult}
+          {finalResult > 0 ? `+ $${finalResult}` : `$${finalResult}`}
         </p>
       </div>
     </RightSideStyled>
