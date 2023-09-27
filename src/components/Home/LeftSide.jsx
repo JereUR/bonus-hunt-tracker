@@ -22,7 +22,7 @@ export default function LeftSide() {
   const [classNameBet, setClassNameBet] = useState(false)
   const [errorForm, setErrorForm] = useState({})
 
-  const { budget, bonusList, onRun, setOnRun } = useGlobalContext()
+  const { budget, bonusList, onRun, setOnRun, setReset } = useGlobalContext()
 
   const { slotName, bet } = bonusData
 
@@ -90,6 +90,7 @@ export default function LeftSide() {
 
     if (!Object.keys(errors).length) {
       if (window.confirm('¿Comenzar Bonus Hunt?')) {
+        setReset(false)
         setOnRun(true)
       }
     }
