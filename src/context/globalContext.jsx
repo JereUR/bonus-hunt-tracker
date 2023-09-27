@@ -92,7 +92,7 @@ const GlobalContext = createContext()
 
 export const GlobalProvider = ({ children }) => {
   const [onRun, setOnRun] = useState(false)
-  const [budget, setBudget] = useState(null)
+  const [budget, setBudget] = useState('')
   const [bonusList, setBonusList] = useState(costumBonusList)
 
   const deleteBonusItem = (id) => {
@@ -100,13 +100,15 @@ export const GlobalProvider = ({ children }) => {
     setBonusList(newData)
   }
 
-  const updateWin = (id, win) => {
+  const updateWin = ({ id, win }) => {
     setBonusList((prevBonusList) => {
       return prevBonusList.map((bonus) => {
         if (bonus.id === id) {
+          const odd = (win / bonus.bet).toFixed(2)
           return {
             ...bonus,
-            win
+            win,
+            odd
           }
         }
         return bonus
