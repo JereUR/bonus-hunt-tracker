@@ -4,11 +4,10 @@ import useGetAttributesDetails from '../../utils/useGetAttributesDetails'
 
 export default function RightSide() {
   const { budget, bonusList } = useGlobalContext()
-  const { maxWin, maxOdd, currentAvg, requiredAvg } = useGetAttributesDetails()
-  console.log({ maxWin })
-  console.log({ maxOdd })
-  console.log({ currentAvg })
-  console.log({ requiredAvg })
+  const { maxWin, maxOdd, currentAvg, requiredAvg, totalWin } =
+    useGetAttributesDetails()
+
+  const finalResult = totalWin - budget
 
   return (
     <RightSideStyled>
@@ -22,7 +21,11 @@ export default function RightSide() {
       </div>
       <div className="data-container">
         <h5>REQUIRED AVG :</h5>
-        <p>{requiredAvg ? requiredAvg : '-'}</p>
+        {requiredAvg ? (
+          <p>{requiredAvg <= 0 ? 'Profit' : requiredAvg}</p>
+        ) : (
+          <p>-</p>
+        )}
       </div>
       <div className="data-container">
         <h5>BONUSES:</h5>
@@ -35,6 +38,16 @@ export default function RightSide() {
       <div className="data-container">
         <h5>MAX X:</h5>
         <p>{maxOdd ? maxOdd : '-'}</p>
+      </div>
+      <div className="data-container">
+        <h5>TOTAL WIN:</h5>
+        <p>{totalWin ? totalWin : '-'}</p>
+      </div>
+      <div className="data-container">
+        <h5>RESULTADO FINAL:</h5>
+        <p className={finalResult < 0 ? 'loss' : 'profit'}>
+          {finalResult > 0 ? `+ ${finalResult}` : finalResult}
+        </p>
       </div>
     </RightSideStyled>
   )
@@ -50,6 +63,16 @@ const RightSideStyled = styled.div`
   overflow: auto;
   overflow-x: hidden;
   overflow-y: auto;
+
+  .data-container {
+    .loss {
+      color: var(--error-color);
+    }
+
+    .profit {
+      color: var(--check-color);
+    }
+  }
 
   &::-webkit-scrollbar {
     width: 10px;
