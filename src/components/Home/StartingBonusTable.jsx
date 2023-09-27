@@ -63,7 +63,7 @@ export default function StartingBonusTable({ bonusList }) {
       const errors = [...errorWins]
       errors[index] = null
       setErrorWins(errors)
-      updateWin()
+      updateWin({ id: bonusList[index].id, win: winInputs[index] })
     }
   }
 
@@ -128,10 +128,7 @@ export default function StartingBonusTable({ bonusList }) {
                 <td>
                   {checkedWins[index] &&
                     errorWins[index] === null &&
-                    (winInputs[index] === 0
-                      ? 'x 0'
-                      : 'x ' +
-                        parseFloat((winInputs[index] / item.bet).toFixed(2)))}
+                    (winInputs[index] === 0 ? 'x 0' : 'x ' + item.odd)}
                 </td>
               </tr>
             ))}

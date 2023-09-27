@@ -52,8 +52,6 @@ export default function useGetAttributesDetails() {
       Cavg = (oddMount / bonusList.length).toFixed(2)
     }
 
-    console.log(betMount)
-
     setRequiredAvg(Ravg)
     setCurrentAvg(Cavg)
     setTotalWin(win)
