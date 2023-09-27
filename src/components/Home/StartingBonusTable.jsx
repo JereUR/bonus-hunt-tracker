@@ -13,7 +13,7 @@ export default function StartingBonusTable({ bonusList }) {
   const [checkedWins, setCheckedWins] = useState(bonusList.map(() => false))
   const [classNameWins, setClassNameWins] = useState(bonusList.map(() => false))
 
-  const { updateWin, setOnRun } = useGlobalContext()
+  const { updateWin, setOnRun, setReset } = useGlobalContext()
 
   const validation = (index) => {
     let error = ''
@@ -49,6 +49,14 @@ export default function StartingBonusTable({ bonusList }) {
     setWinInputs(newWinInputs)
   }
 
+  const handleBack = () => {
+    bonusList.forEach((item) => {
+      updateWin({ id: item.id, win: null })
+    })
+    setReset(true)
+    setOnRun(false)
+  }
+
   const addWin = (index) => {
     const newCkeckedWins = [...checkedWins]
     newCkeckedWins[index] = !newCkeckedWins[index]
@@ -69,7 +77,7 @@ export default function StartingBonusTable({ bonusList }) {
 
   return (
     <Container>
-      <ButtonBack onClick={() => setOnRun(false)}>
+      <ButtonBack onClick={handleBack}>
         {arrowBack} <span>Volver</span>
       </ButtonBack>
       <h1>Lista de Bonus</h1>
