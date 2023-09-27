@@ -94,6 +94,7 @@ export const GlobalProvider = ({ children }) => {
   const [onRun, setOnRun] = useState(false)
   const [budget, setBudget] = useState('')
   const [bonusList, setBonusList] = useState(costumBonusList)
+  const [reset, setReset] = useState(false)
 
   const deleteBonusItem = (id) => {
     let newData = bonusList.filter((el) => el.id !== id)
@@ -104,7 +105,14 @@ export const GlobalProvider = ({ children }) => {
     setBonusList((prevBonusList) => {
       return prevBonusList.map((bonus) => {
         if (bonus.id === id) {
-          const odd = (win / bonus.bet).toFixed(2)
+          let odd
+
+          if (win !== null) {
+            odd = (Number(win) / Number(bonus.bet)).toFixed(2)
+          } else {
+            odd = null
+          }
+
           return {
             ...bonus,
             win,
@@ -126,7 +134,9 @@ export const GlobalProvider = ({ children }) => {
         deleteBonusItem,
         onRun,
         setOnRun,
-        updateWin
+        updateWin,
+        reset,
+        setReset
       }}
     >
       {children}
