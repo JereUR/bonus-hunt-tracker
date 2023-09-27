@@ -37,13 +37,17 @@ export default function useGetAttributesDetails() {
       }
     })
 
-    let Cavg
-    let Ravg
+    let Cavg = null
+    let Ravg = null
 
     if (betMount === 0) {
       Ravg = 'F'
     } else {
-      Ravg = ((Number(budget) - win) / betMount).toFixed(2)
+      if (onRun) {
+        Ravg = ((Number(budget) - win) / betMount).toFixed(2)
+      } else {
+        if (budget > 0) Ravg = (Number(budget) / betMount).toFixed(2)
+      }
     }
 
     if (oddCount > 0) {
