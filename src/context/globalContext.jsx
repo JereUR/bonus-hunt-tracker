@@ -1,104 +1,94 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 
-const costumBonusList = [
-  {
-    id: 'bonus_1000',
-    slotName: 'Slot 1',
-    bet: 30,
-    win: null,
-    odd: null
-  },
-  {
-    id: 'bonus_2000',
-    slotName: 'Slot 2',
-    bet: 40,
-    win: null,
-    odd: null
-  },
-  {
-    id: 'bonus_3000',
-    slotName: 'Slot 3',
-    bet: 50,
-    win: null,
-    odd: null
-  },
-  {
-    id: 'bonus_4000',
-    slotName: 'Slot 4',
-    bet: 30,
-    win: null,
-    odd: null
-  },
-  {
-    id: 'bonus_5000',
-    slotName: 'Slot 5',
-    bet: 80,
-    win: null,
-    odd: null
-  },
-  {
-    id: 'bonus_6000',
-    slotName: 'Slot 6',
-    bet: 60,
-    win: null,
-    odd: null
-  },
-  {
-    id: 'bonus_7000',
-    slotName: 'Slot 7',
-    bet: 70,
-    win: null,
-    odd: null
-  },
-  {
-    id: 'bonus_8000',
-    slotName: 'Slot 8',
-    bet: 80,
-    win: null,
-    odd: null
-  },
-  {
-    id: 'bonus_9000',
-    slotName: 'Slot 9',
-    bet: 90,
-    win: null,
-    odd: null
-  },
-  {
-    id: 'bonus_1100',
-    slotName: 'Slot 10',
-    bet: 130,
-    win: null,
-    odd: null
-  },
-  {
-    id: 'bonus_1200',
-    slotName: 'Slot 11',
-    bet: 40,
-    win: null,
-    odd: null
-  },
-  {
-    id: 'bonus_1300',
-    slotName: 'Slot 12',
-    bet: 50,
-    win: null,
-    odd: null
-  }
-]
+import { supabase } from '../services/supabase'
+import {
+  addBonusToSupabase,
+  deleteBonusFromSupabase,
+  getBonusesFromSupabase,
+  updateBonusItemFromSupabase
+} from '../services'
 
 const GlobalContext = createContext()
 
 export const GlobalProvider = ({ children }) => {
   const [onRun, setOnRun] = useState(false)
   const [budget, setBudget] = useState('')
-  const [bonusList, setBonusList] = useState(costumBonusList)
+  const [bonusList, setBonusList] = useState([])
   const [reset, setReset] = useState(false)
+  const [session, setSession] = useState(null)
+  const [user, setUser] = useState(null)
 
-  const deleteBonusItem = (id) => {
+  //Session
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data)
+
+      if (data.session !== null) {
+        getUserInfo(data.session.user.id)
+      }
+    })
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+
+      if (session !== null) {
+        getUserInfo(session.user.id)
+      }
+    })
+  }, [])
+
+  const getUserInfo = async (id) => {
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', id)
+
+    if (error === null) {
+      setUser(data)
+    }
+  }
+
+  //Bonuses
+
+  const getBonuses = async () => {
+    if (user === null) return
+
+    const { error, bonuses } = await getBonusesFromSupabase()
+
+    if (error === null) {
+      setBonusList(bonuses)
+    }
+  }
+
+  const addBonus = async (bonus) => {
+    if (user === null) return
+
+    const { error } = await addBonusToSupabase(bonus)
+
+    if (error === null) {
+      getBonuses()
+    }
+  }
+
+  const deleteBonusItem = async (id) => {
+    const { error } = await deleteBonusFromSupabase(id)
+
+    if (error === null) getBonuses()
+  }
+
+  /*  const deleteBonusItem = (id) => {
     let newData = bonusList.filter((el) => el.id !== id)
     setBonusList(newData)
+  }*/
+
+  const updateBonusItem = async (id, win, odd) => {
+    const { error } = await updateBonusItemFromSupabase(id, win, odd)
+
+    if (error === null) {
+      getBonuses()
+    }
   }
 
   const updateWin = ({ id, win }) => {
@@ -127,14 +117,18 @@ export const GlobalProvider = ({ children }) => {
   return (
     <GlobalContext.Provider
       value={{
+        session,
+        user,
         budget,
         setBudget,
+        getBonuses,
         bonusList,
-        setBonusList,
+        addBonus,
         deleteBonusItem,
         onRun,
         setOnRun,
         updateWin,
+        updateBonusItem,
         reset,
         setReset
       }}
