@@ -51,7 +51,7 @@ export default function StartingBonusTable({ bonusList }) {
 
   const handleBack = () => {
     bonusList.forEach((item) => {
-      updateWin({ id: item.id, win: null })
+      updateWin({ id: item.id, win: null, odd: null })
     })
     setReset(true)
     setOnRun(false)
@@ -71,7 +71,8 @@ export default function StartingBonusTable({ bonusList }) {
       const errors = [...errorWins]
       errors[index] = null
       setErrorWins(errors)
-      updateWin({ id: bonusList[index].id, win: winInputs[index] })
+      const odd = winInputs[index] / bonusList[index].bet
+      updateWin({ id: bonusList[index].id, win: winInputs[index], odd })
     }
   }
 
