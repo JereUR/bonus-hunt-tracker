@@ -153,6 +153,10 @@ const RightSideStyled = styled.div`
       font-size: 20px;
       font-weight: bold;
     }
+
+    @media (max-width: 1000px) {
+      line-height: 20px;
+    }
   }
 
   &::-webkit-scrollbar {

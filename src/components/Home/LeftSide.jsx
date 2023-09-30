@@ -151,7 +151,7 @@ const LeftSideStyled = styled.div`
   border: 3px solid var(--secondary-color);
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  margin-right: 5px;
+  margin-right: 20px;
   backdrop-filter: blur(4.5px);
   overflow-x: hidden;
   overflow-y: auto;

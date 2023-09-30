@@ -15,5 +15,6 @@ export default function Home() {
 const HomeStyled = styled.div`
   display: flex;
   height: 90vh;
+  padding: 2rem;
   overflow-y: hidden;
 `
