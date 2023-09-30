@@ -62,3 +62,6 @@ export const editIcon = <i className="ti ti-edit"></i>
 export const trashIcon = <i className="ti ti-trash-x"></i>
 export const winIcon = <i className="ti ti-award-filled"></i>
 export const targetIcon = <i className="ti ti-target-arrow"></i>
+export const homeIcon = <i className="ti ti-home"></i>
+export const historyIcon = <i className="ti ti-history"></i>
+export const logoutIcon = <i className="ti ti-logout"></i>
