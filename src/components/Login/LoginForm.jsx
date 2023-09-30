@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import styled, { keyframes } from 'styled-components'
+import { signInWithEmail } from '../../services'
 
 const initialState = {
   email: '',
@@ -10,8 +11,25 @@ export default function LoginForm({ setActive }) {
   const [inputState, setInputState] = useState(initialState)
   const [classNameEmail, setClassNameEmail] = useState(false)
   const [classNamePassword, setClassNamePassword] = useState(false)
+  const [error, setError] = useState({})
+  const [errorForm, setErrorForm] = useState({})
+  const [loading, setLoading] = useState(false)
 
   const { email, password } = inputState
+
+  const validation = () => {
+    let err = {}
+
+    if (email === '') {
+      err.email = 'Ingrese un email.'
+    }
+
+    if (password === '') {
+      err.password = 'Ingrese una contraseña.'
+    }
+
+    return err
+  }
 
   const handleFocus = (name) => {
     switch (name) {
@@ -49,9 +67,35 @@ export default function LoginForm({ setActive }) {
     })
   }
 
+  const handleEmail = async (e) => {
+    e.preventDefault()
+
+    const err = validation()
+    setErrorForm(err)
+
+    if (Object.keys(err).length === 0) {
+      setLoading(true)
+      const { error } = await signInWithEmail({
+        email: inputState.email,
+        password: inputState.password
+      })
+
+      if (error !== null && error !== undefined) {
+        if (error.message.includes('Invalid login credentials')) {
+          setError('Credenciales incorrectas.')
+          setLoading(false)
+          return
+        }
+      }
+
+      setInputState(initialState)
+    }
+    setLoading(false)
+  }
+
   return (
     <LoginFormStyled>
-      <form>
+      <form onSubmit={handleEmail}>
         <div className="user-box">
           <input
             className={classNameEmail ? 'focus' : ''}

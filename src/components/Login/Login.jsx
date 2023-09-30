@@ -3,8 +3,13 @@ import styled from 'styled-components'
 import logo from '../../assets/logo2.png'
 import LoginForm from './LoginForm'
 import { githubIcon, googleIcon } from '../../utils/Icons'
+import { signInWithGithub } from '../../services'
 
 export default function Login({ setActive }) {
+  const handleGithub = async () => {
+    await signInWithGithub()
+  }
+
   return (
     <LoginStyled>
       <div className="img-container">
@@ -21,7 +26,7 @@ export default function Login({ setActive }) {
           {googleIcon}
           Iniciar Sesión con Google
         </ButtonStyledGoogle>
-        <ButtonStyledGithub>
+        <ButtonStyledGithub onClick={handleGithub}>
           {githubIcon}
           Iniciar Sesión con Github
         </ButtonStyledGithub>
