@@ -3,13 +3,16 @@ import styled, { keyframes } from 'styled-components'
 
 import logo from '../../assets/logo2.png'
 import { arrowBack } from '../../utils/Icons'
+import { ToastContainer, toast } from 'react-toastify'
+import { useGlobalContext } from '../../context/globalContext'
+import { signUpWithEmail } from '../../services'
 
 const initialState = {
   name: '',
-  username: '',
+  user_name: '',
   email: '',
   password: '',
-  confirmPassword: ''
+  confirm_password: ''
 }
 
 export default function SignUp({ setActive }) {
@@ -20,8 +23,12 @@ export default function SignUp({ setActive }) {
   const [classNamePassword, setClassNamePassword] = useState(false)
   const [classNamePasswordConfirm, setClassNamePasswordConfirm] =
     useState(false)
+  const [errorForm, setErrorForm] = useState({})
+  const [loading, setLoading] = useState(false)
 
-  const { name, username, email, password, confirmPassword } = inputState
+  const { error, setError } = useGlobalContext()
+
+  const { name, user_name, email, password, confirm_password } = inputState
 
   const handleFocus = (nameTag) => {
     switch (nameTag) {
@@ -73,12 +80,99 @@ export default function SignUp({ setActive }) {
     }
   }
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setInputState({
-      ...inputState,
-      [name]: value
-    })
+  const validation = () => {
+    let err = {}
+
+    if (name === '') {
+      err.name = 'Debe ingresar su nombre.'
+    }
+
+    if (name.length > 25) {
+      err.name = 'El nombre no debe exceder los 25 caracteres.'
+    }
+
+    if (user_name === '') {
+      err.user_name = 'Debe ingresar su nombre de usuario.'
+    }
+
+    if (user_name.length > 15) {
+      err.user_name = 'El nombre de usuario no debe exceder los 15 caracteres.'
+    }
+
+    if (email === '') {
+      err.email = 'Debe ingresar un email.'
+    }
+
+    if (password === '') {
+      err.password = 'Debe ingresar una contraseña.'
+    }
+
+    if (password.length < 8) {
+      err.password = 'La contraseña debe tener un mínimo de 8 caracteres.'
+    }
+
+    if (confirm_password === '') {
+      err.confirm_password = 'Debe confirmar su contraseña.'
+    }
+
+    if (confirm_password !== password) {
+      err.password = 'Las contraseñas no coinciden.'
+      err.confirm_password = 'Las contraseñas no coinciden.'
+    }
+
+    return err
+  }
+
+  const handleInput =
+    (name) =>
+    ({ target }) => {
+      setInputState({ ...inputState, [name]: target.value })
+    }
+
+  const handleSignUp = async (e) => {
+    e.preventDefault()
+
+    const err = validation()
+    setErrorForm(err)
+
+    /* if (Object.keys(err).length === 0) {
+      setLoading(true)
+      const { error: errorSignUp, errorUpdate } = await signUpWithEmail(
+        inputState
+      )
+
+      if (errorSignUp !== null && errorSignUp !== undefined) {
+        setError(errorSignUp.message)
+        return
+      }
+
+      if (errorUpdate !== null && errorUpdate !== undefined) {
+        setError(errorUpdate.message)
+        return
+      }
+
+      setInputState(initialState)
+
+      toast.success(
+        'Registro exitoso. Chequea tu email y confirma tu cuenta para poder iniciar sesión. Redirigiendo...',
+        {
+          position: 'top-right',
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark'
+        }
+      )
+
+      setTimeout(() => {
+        setActive(0)
+      }, 4000)
+    } */
+
+    setLoading(false)
   }
 
   return (
@@ -89,7 +183,8 @@ export default function SignUp({ setActive }) {
       <div className="img-container">
         <img src={logo} alt="logo" />
       </div>
-      <form>
+      <form onSubmit={handleSignUp}>
+        {error && <ErrorText>{error}</ErrorText>}
         <div className="user-box">
           <input
             className={classNameName ? 'focus' : ''}
@@ -98,8 +193,9 @@ export default function SignUp({ setActive }) {
             value={name}
             name="name"
             type="text"
-            onChange={handleChange}
+            onChange={handleInput}
           />
+          {errorForm.name && <ErrorText>{errorForm.name}</ErrorText>}
           <label>Nombre</label>
         </div>
         <div className="user-box">
@@ -107,11 +203,12 @@ export default function SignUp({ setActive }) {
             className={classNameUsername ? 'focus' : ''}
             onFocus={({ target }) => handleFocus(target.name)}
             onBlur={({ target }) => handleBlur(target.name)}
-            value={username}
-            name="username"
+            value={user_name}
+            name="user_name"
             type="text"
-            onChange={handleChange}
+            onChange={handleInput}
           />
+          {errorForm.user_name && <ErrorText>{errorForm.user_name}</ErrorText>}
           <label>Nombre de usuario</label>
         </div>
         <div className="user-box">
@@ -122,8 +219,9 @@ export default function SignUp({ setActive }) {
             value={email}
             name="email"
             type="text"
-            onChange={handleChange}
+            onChange={handleInput}
           />
+          {errorForm.email && <ErrorText>{errorForm.email}</ErrorText>}
           <label>Email</label>
         </div>
         <div className="user-box">
@@ -134,8 +232,9 @@ export default function SignUp({ setActive }) {
             value={password}
             name="password"
             type="password"
-            onChange={handleChange}
+            onChange={handleInput}
           />
+          {errorForm.password && <ErrorText>{errorForm.password}</ErrorText>}
           <label>Contraseña</label>
         </div>
         <div className="user-box">
@@ -143,11 +242,14 @@ export default function SignUp({ setActive }) {
             className={classNamePasswordConfirm ? 'focus' : ''}
             onFocus={({ target }) => handleFocus(target.name)}
             onBlur={({ target }) => handleBlur(target.name)}
-            value={confirmPassword}
-            name="confirmPassword"
+            value={confirm_password}
+            name="confirm_password"
             type="password"
-            onChange={handleChange}
+            onChange={handleInput}
           />
+          {errorForm.confirm_password && (
+            <ErrorText>{errorForm.confirm_password}</ErrorText>
+          )}
           <label>Confirmar contraseña</label>
         </div>
         <button className="register-btn">
@@ -158,6 +260,18 @@ export default function SignUp({ setActive }) {
           Registrarse
         </button>
       </form>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </LoginFormStyled>
   )
 }
@@ -228,12 +342,21 @@ const ButtonBack = styled.button`
   }
 `
 
+const ErrorText = styled.span`
+  display: flex;
+  justify-content: left;
+  font-size: 12px;
+  color: var(--error-color);
+`
+
 const LoginFormStyled = styled.div`
+  display: flex;
+  flex-direction: column;
   position: absolute;
   top: 50%;
   left: 50%;
   width: 500px;
-  height: 80vh;
+  height: 90vh;
   padding: 100px 60px 40px 60px;
   margin: 20px auto;
   transform: translate(-50%, -55%);
@@ -242,6 +365,7 @@ const LoginFormStyled = styled.div`
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
   border-radius: 10px;
+  overflow-y: auto;
 
   img {
     width: 250px;
@@ -323,7 +447,7 @@ const LoginFormStyled = styled.div`
     text-transform: uppercase;
     overflow: hidden;
     transition: 0.5s;
-    margin: 10px 0;
+    margin: 40px 0 10px 0;
     letter-spacing: 3px;
     transition: all 0.4s ease-in-out;
 
@@ -426,6 +550,15 @@ const LoginFormStyled = styled.div`
   p.a2:hover {
     background: transparent;
     color: #aaa;
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color3);
     border-radius: 5px;
   }
 `
