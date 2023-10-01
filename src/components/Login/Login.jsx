@@ -3,11 +3,15 @@ import styled from 'styled-components'
 import logo from '../../assets/logo2.png'
 import LoginForm from './LoginForm'
 import { githubIcon, googleIcon } from '../../utils/Icons'
-import { signInWithGithub } from '../../services'
+import { signInWithGithub, signInWithGoogle } from '../../services'
 
 export default function Login({ setActive }) {
   const handleGithub = async () => {
     await signInWithGithub()
+  }
+
+  const handelGoogle = async () => {
+    await signInWithGoogle()
   }
 
   return (
@@ -22,7 +26,7 @@ export default function Login({ setActive }) {
         <hr className="continuous-line" />
       </div>
       <div className="button-section">
-        <ButtonStyledGoogle>
+        <ButtonStyledGoogle onClick={handelGoogle}>
           {googleIcon}
           Iniciar Sesión con Google
         </ButtonStyledGoogle>
@@ -41,6 +45,7 @@ const ButtonStyledGoogle = styled.button`
   justify-content: center;
   padding: 0.5rem 1.4rem;
   font-size: 0.875rem;
+  margin-top: 10px;
   line-height: 1.25rem;
   font-weight: 700;
   text-align: center;
@@ -75,11 +80,13 @@ const ButtonStyledGithub = styled(ButtonStyledGoogle)`
 `
 
 const LoginStyled = styled.div`
+  display: flex;
+  flex-direction: column;
   position: absolute;
   top: 50%;
   left: 50%;
   width: 500px;
-  height: 80vh;
+  height: 90vh;
   padding: 40px;
   margin: 20px auto;
   transform: translate(-50%, -55%);
@@ -88,6 +95,7 @@ const LoginStyled = styled.div`
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
   border-radius: 10px;
+  overflow-y: auto;
 
   img {
     width: 250px;
@@ -116,7 +124,7 @@ const LoginStyled = styled.div`
     display: flex;
     align-items: center;
     text-align: center;
-    margin: 20px 0;
+    margin: 50px 0;
 
     span {
       color: var(--primary-color);
@@ -130,5 +138,14 @@ const LoginStyled = styled.div`
     width: 10vw;
     background-color: var(--primary-color);
     margin: 0 10px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color3);
+    border-radius: 5px;
   }
 `
