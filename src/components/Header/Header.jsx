@@ -3,10 +3,24 @@ import styled, { keyframes } from 'styled-components'
 import logo from '../../assets/logo2.png'
 import { useGlobalContext } from '../../context/globalContext'
 import Navigation from './Navigation'
+import { useEffect, useState } from 'react'
 
 export default function Header({ active, setActive }) {
-  const { session } = useGlobalContext()
-  const username = session?.user.user_metadata.user_name
+  const [username, setUsername] = useState('')
+  const { user } = useGlobalContext()
+  console.log(user)
+
+  const name = user?.user_metadata.user_name
+
+  useEffect(() => {
+    if (user) {
+      if (name === undefined) {
+        setUsername(user.user_metadata.name)
+      } else {
+        setUsername(name)
+      }
+    }
+  }, [user])
 
   return (
     <HeaderStyled>
