@@ -18,6 +18,7 @@ export const GlobalProvider = ({ children }) => {
   const [reset, setReset] = useState(false)
   const [session, setSession] = useState(null)
   const [user, setUser] = useState(null)
+  const [error, setError] = useState('')
 
   //Session
 
@@ -26,7 +27,7 @@ export const GlobalProvider = ({ children }) => {
       setSession(data)
 
       if (data.session !== null) {
-        getUserInfo(data.session.user.id)
+        getUserInfo(data.session.user)
       }
     })
 
@@ -34,7 +35,7 @@ export const GlobalProvider = ({ children }) => {
       setSession(session)
 
       if (session !== null) {
-        getUserInfo(session.user.id)
+        getUserInfo(session.user)
       }
     })
   }, [])
@@ -130,7 +131,9 @@ export const GlobalProvider = ({ children }) => {
         updateWin,
         updateBonusItem,
         reset,
-        setReset
+        setReset,
+        error,
+        setError
       }}
     >
       {children}
