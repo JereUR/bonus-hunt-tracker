@@ -23,19 +23,11 @@ export const GlobalProvider = ({ children }) => {
   //Session
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data)
-
-      if (data.session !== null) {
-        getUserInfo(data.session.user)
-      }
-    })
-
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
 
       if (session !== null) {
-        getUserInfo(session.user)
+        getUserInfo(session?.user)
       }
     })
   }, [])
