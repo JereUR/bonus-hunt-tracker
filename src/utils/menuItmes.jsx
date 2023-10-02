@@ -1,13 +1,14 @@
+import { DIRECTIONS } from './Direction'
 import { historyIcon, homeIcon } from './Icons'
 
 export const menuItems = [
   {
-    id: 'home',
+    id: DIRECTIONS.HOME,
     title: 'Inicio',
     icon: homeIcon
   },
   {
-    id: 'history',
+    id: DIRECTIONS.HISTORY,
     title: 'Historial',
     icon: historyIcon
   }
