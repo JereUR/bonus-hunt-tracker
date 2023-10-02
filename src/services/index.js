@@ -53,12 +53,11 @@ export const deleteBonusFromSupabase = async (id) => {
 
 //Session
 
-export const updateUser = async (credentials, user) => {
+export const updateUser = async (data, credentials) => {
   const { error: errorUpdate } = await supabase
-    .from('users')
+    .from('auth.users')
     .update({ name: credentials.name, user_name: credentials.user_name })
-    .eq('id', user.user.id)
-    .select()
+    .eq('id', data.user.id)
 
   return { errorUpdate }
 }
@@ -66,14 +65,14 @@ export const updateUser = async (credentials, user) => {
 export const signUpWithEmail = async (credentials) => {
   const { data, error } = await supabase.auth.signUp({
     email: credentials.email,
-    password: credentials.password
+    password: credentials.password,
+    options: {
+      data: {
+        name: credentials.name,
+        user_name: credentials.user_name
+      }
+    }
   })
-
-  if (error === null) {
-    const { errorUpdate } = await updateUser(credentials, data)
-
-    return { data, error, errorUpdate }
-  }
 
   return { data, error }
 }
