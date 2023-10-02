@@ -7,20 +7,19 @@ import { useEffect, useState } from 'react'
 
 export default function Header({ active, setActive }) {
   const [username, setUsername] = useState('')
-  const { user } = useGlobalContext()
-  console.log(user)
+  const { session } = useGlobalContext()
 
-  const name = user?.user_metadata.user_name
+  const name = session?.user?.user_metadata.user_name
 
   useEffect(() => {
-    if (user) {
+    if (session) {
       if (name === undefined) {
-        setUsername(user.user_metadata.name)
+        setUsername(session.user?.user_metadata.name)
       } else {
         setUsername(name)
       }
     }
-  }, [user])
+  }, [session])
 
   return (
     <HeaderStyled>
