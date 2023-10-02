@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import styled, { keyframes } from 'styled-components'
+import { toast } from 'react-toastify'
+
 import { signInWithEmail } from '../../services'
+import Loader from '../Loader/Loader'
+import { DIRECTIONS } from '../../utils/Direction'
 
 const initialState = {
   email: '',
@@ -11,7 +15,6 @@ export default function LoginForm({ setActive }) {
   const [inputState, setInputState] = useState(initialState)
   const [classNameEmail, setClassNameEmail] = useState(false)
   const [classNamePassword, setClassNamePassword] = useState(false)
-  const [error, setError] = useState({})
   const [errorForm, setErrorForm] = useState({})
   const [loading, setLoading] = useState(false)
 
@@ -75,21 +78,33 @@ export default function LoginForm({ setActive }) {
 
     if (Object.keys(err).length === 0) {
       setLoading(true)
-      const { error } = await signInWithEmail({
+      let { error } = await signInWithEmail({
         email: inputState.email,
         password: inputState.password
       })
 
-      if (error !== null && error !== undefined) {
-        if (error.message.includes('Invalid login credentials')) {
-          setError('Credenciales incorrectas.')
-          setLoading(false)
-          return
-        }
+      if (error.message === 'Invalid login credentials') {
+        error.message = 'Credenciales incorrectas.'
       }
 
+      if (error) {
+        toast.error(error.message, {
+          position: 'top-right',
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark'
+        })
+      }
+    } else {
       setInputState(initialState)
+      setClassNameEmail(false)
+      setClassNamePassword(false)
     }
+
     setLoading(false)
   }
 
@@ -106,6 +121,7 @@ export default function LoginForm({ setActive }) {
             type="text"
             onChange={handleChange}
           />
+          {errorForm.email && <ErrorText>{errorForm.email}</ErrorText>}
           <label>Email</label>
         </div>
         <div className="user-box">
@@ -118,6 +134,7 @@ export default function LoginForm({ setActive }) {
             type="password"
             onChange={handleChange}
           />
+          {errorForm.password && <ErrorText>{errorForm.password}</ErrorText>}
           <label>Contraseña</label>
         </div>
         <button>
@@ -128,9 +145,10 @@ export default function LoginForm({ setActive }) {
           Iniciar Sesión
         </button>
       </form>
+      {loading && <Loader customClass="login-loader" />}
       <p className="signup">
         No tienes cuenta?{' '}
-        <span className="a2" onClick={() => setActive('signup')}>
+        <span className="a2" onClick={() => setActive(DIRECTIONS.SIGNUP)}>
           Regístrate!
         </span>
       </p>
@@ -181,6 +199,15 @@ const btnAnim4 = keyframes`
   }
 `
 
+const ErrorText = styled.span`
+  display: flex;
+  margin-top: -20px;
+  margin-bottom: 10px;
+  justify-content: left;
+  font-size: 12px;
+  color: var(--error-color);
+`
+
 const LoginFormStyled = styled.div`
   p:first-child {
     margin: 0 0 30px;
@@ -190,6 +217,10 @@ const LoginFormStyled = styled.div`
     font-size: 1.5rem;
     font-weight: bold;
     letter-spacing: 1px;
+  }
+
+  .login-loader {
+    margin: 10px auto;
   }
 
   .user-box {
