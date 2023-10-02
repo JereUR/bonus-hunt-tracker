@@ -1,17 +1,52 @@
 import styled from 'styled-components'
+import { useState } from 'react'
+import { toast } from 'react-toastify'
 
 import logo from '../../assets/logo2.png'
 import LoginForm from './LoginForm'
 import { githubIcon, googleIcon } from '../../utils/Icons'
 import { signInWithGithub, signInWithGoogle } from '../../services'
+import Loader from '../Loader/Loader'
 
 export default function Login({ setActive }) {
+  const [loading, setLoading] = useState(false)
+
   const handleGithub = async () => {
-    await signInWithGithub()
+    setLoading(true)
+    const { error } = await signInWithGithub()
+
+    if (error) {
+      toast.error(error.message, {
+        position: 'top-right',
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark'
+      })
+    }
+    setLoading(false)
   }
 
   const handelGoogle = async () => {
-    await signInWithGoogle()
+    setLoading(true)
+    const { error } = await signInWithGoogle()
+
+    if (error) {
+      toast.error(error.message, {
+        position: 'top-right',
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark'
+      })
+    }
+    setLoading(false)
   }
 
   return (
@@ -26,14 +61,22 @@ export default function Login({ setActive }) {
         <hr className="continuous-line" />
       </div>
       <div className="button-section">
-        <ButtonStyledGoogle onClick={handelGoogle}>
+        <ButtonStyledGoogle
+          onClick={() => {
+            setLoading(true)
+            handelGoogle()
+            setLoading(false)
+          }}
+        >
           {googleIcon}
           Iniciar Sesión con Google
         </ButtonStyledGoogle>
+        {loading && <Loader customClass="google-loader" />}
         <ButtonStyledGithub onClick={handleGithub}>
           {githubIcon}
           Iniciar Sesión con Github
         </ButtonStyledGithub>
+        {loading && <Loader customClass="github-loader" />}
       </div>
     </LoginStyled>
   )
@@ -118,6 +161,15 @@ const LoginStyled = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    .google-loader {
+      margin-top: -10px;
+      margin-bottom: 10px;
+    }
+
+    .github-loader {
+      margin-top: 20px;
+    }
   }
 
   .separator {
