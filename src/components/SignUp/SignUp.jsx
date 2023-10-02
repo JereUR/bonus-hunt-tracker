@@ -4,8 +4,9 @@ import styled, { keyframes } from 'styled-components'
 import logo from '../../assets/logo2.png'
 import { arrowBack } from '../../utils/Icons'
 import { ToastContainer, toast } from 'react-toastify'
-import { useGlobalContext } from '../../context/globalContext'
 import { signUpWithEmail } from '../../services'
+import { DIRECTIONS } from '../../utils/Direction'
+import Loader from '../Loader/Loader'
 
 const initialState = {
   name: '',
@@ -26,8 +27,6 @@ export default function SignUp({ setActive }) {
   const [errorForm, setErrorForm] = useState({})
   const [loading, setLoading] = useState(false)
 
-  const { error, setError } = useGlobalContext()
-
   const { name, user_name, email, password, confirm_password } = inputState
 
   const handleFocus = (nameTag) => {
@@ -35,7 +34,7 @@ export default function SignUp({ setActive }) {
       case 'name':
         setClassNameName(true)
         break
-      case 'username':
+      case 'user_name':
         setClassNameUsername(true)
         break
       case 'email':
@@ -44,7 +43,7 @@ export default function SignUp({ setActive }) {
       case 'password':
         setClassNamePassword(true)
         break
-      case 'confirmPassword':
+      case 'confirm_password':
         setClassNamePasswordConfirm(true)
         break
     }
@@ -57,8 +56,8 @@ export default function SignUp({ setActive }) {
           setClassNameName(false)
         }
         break
-      case 'username':
-        if (username === '') {
+      case 'user_name':
+        if (user_name === '') {
           setClassNameUsername(false)
         }
         break
@@ -72,8 +71,8 @@ export default function SignUp({ setActive }) {
           setClassNamePassword(false)
         }
         break
-      case 'confirmPassword':
-        if (confirmPassword === '') {
+      case 'confirm_password':
+        if (confirm_password === '') {
           setClassNamePasswordConfirm(false)
         }
         break
@@ -135,27 +134,12 @@ export default function SignUp({ setActive }) {
     const err = validation()
     setErrorForm(err)
 
-    /* if (Object.keys(err).length === 0) {
+    if (Object.keys(err).length === 0) {
       setLoading(true)
-      const { error: errorSignUp, errorUpdate } = await signUpWithEmail(
-        inputState
-      )
+      const { error /* , errorUpdate */ } = await signUpWithEmail(inputState)
 
-      if (errorSignUp !== null && errorSignUp !== undefined) {
-        setError(errorSignUp.message)
-        return
-      }
-
-      if (errorUpdate !== null && errorUpdate !== undefined) {
-        setError(errorUpdate.message)
-        return
-      }
-
-      setInputState(initialState)
-
-      toast.success(
-        'Registro exitoso. Chequea tu email y confirma tu cuenta para poder iniciar sesión. Redirigiendo...',
-        {
+      /* if (errorUpdate) {
+        toast.success(errorUpdate.message, {
           position: 'top-right',
           autoClose: 4000,
           hideProgressBar: false,
@@ -164,27 +148,57 @@ export default function SignUp({ setActive }) {
           draggable: true,
           progress: undefined,
           theme: 'dark'
-        }
-      )
+        })
+      } */
+
+      if (error) {
+        toast.success(error.message, {
+          position: 'top-right',
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark'
+        })
+      }
+
+      if (!error) {
+        toast.success(
+          'Registro exitoso. Chequea tu email y confirma tu cuenta para poder iniciar sesión. Redirigiendo...',
+          {
+            position: 'top-right',
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark'
+          }
+        )
+      }
 
       setTimeout(() => {
-        setActive(0)
+        setActive(DIRECTIONS.LOGIN)
       }, 4000)
-    } */
+    } else {
+      setInputState(initialState)
+    }
 
     setLoading(false)
   }
 
   return (
     <LoginFormStyled>
-      <ButtonBack onClick={() => setActive('login')}>
+      <ButtonBack onClick={() => setActive(DIRECTIONS.LOGIN)}>
         {arrowBack} <span>Volver</span>
       </ButtonBack>
       <div className="img-container">
         <img src={logo} alt="logo" />
       </div>
       <form onSubmit={handleSignUp}>
-        {error && <ErrorText>{error}</ErrorText>}
         <div className="user-box">
           <input
             className={classNameName ? 'focus' : ''}
@@ -193,7 +207,7 @@ export default function SignUp({ setActive }) {
             value={name}
             name="name"
             type="text"
-            onChange={handleInput}
+            onChange={handleInput('name')}
           />
           {errorForm.name && <ErrorText>{errorForm.name}</ErrorText>}
           <label>Nombre</label>
@@ -206,7 +220,7 @@ export default function SignUp({ setActive }) {
             value={user_name}
             name="user_name"
             type="text"
-            onChange={handleInput}
+            onChange={handleInput('user_name')}
           />
           {errorForm.user_name && <ErrorText>{errorForm.user_name}</ErrorText>}
           <label>Nombre de usuario</label>
@@ -219,7 +233,7 @@ export default function SignUp({ setActive }) {
             value={email}
             name="email"
             type="text"
-            onChange={handleInput}
+            onChange={handleInput('email')}
           />
           {errorForm.email && <ErrorText>{errorForm.email}</ErrorText>}
           <label>Email</label>
@@ -232,7 +246,7 @@ export default function SignUp({ setActive }) {
             value={password}
             name="password"
             type="password"
-            onChange={handleInput}
+            onChange={handleInput('password')}
           />
           {errorForm.password && <ErrorText>{errorForm.password}</ErrorText>}
           <label>Contraseña</label>
@@ -245,7 +259,7 @@ export default function SignUp({ setActive }) {
             value={confirm_password}
             name="confirm_password"
             type="password"
-            onChange={handleInput}
+            onChange={handleInput('confirm_password')}
           />
           {errorForm.confirm_password && (
             <ErrorText>{errorForm.confirm_password}</ErrorText>
@@ -259,6 +273,7 @@ export default function SignUp({ setActive }) {
           <span></span>
           Registrarse
         </button>
+        {loading && <Loader customClass="signup-loader" />}
       </form>
       <ToastContainer
         position="top-right"
@@ -367,6 +382,10 @@ const LoginFormStyled = styled.div`
   border-radius: 10px;
   overflow-y: auto;
 
+  .signup-loader {
+    margin: 10px auto;
+  }
+
   img {
     width: 250px;
     padding: 30px 10px;
@@ -422,7 +441,7 @@ const LoginFormStyled = styled.div`
   }
 
   .user-box .focus ~ label {
-    top: -20px;
+    top: -25px;
     left: 0;
     color: var(--primary-color2);
     font-size: 14px;
