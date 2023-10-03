@@ -11,6 +11,7 @@ import { useGlobalContext } from './context/globalContext'
 import useUpdateSession from './utils/useUpdateSession'
 import Header from './components/Header/Header'
 import { DIRECTIONS } from './utils/Direction'
+import History from './components/History/History'
 
 export default function App() {
   const [active, setActive] = useState('login')
@@ -28,6 +29,13 @@ export default function App() {
           <>
             <Header active={active} setActive={setActive} />
             <Home />
+          </>
+        )
+      case DIRECTIONS.HISTORY:
+        return (
+          <>
+            <Header active={active} setActive={setActive} />
+            <History />
           </>
         )
     }
