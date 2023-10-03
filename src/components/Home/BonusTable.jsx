@@ -1,10 +1,12 @@
 import styled from 'styled-components'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import slotIcon from '../../assets/slot-icon.png'
 import betIcon from '../../assets/bet-icon.png'
 import { editIcon, plusIcon, trashIcon } from '../../utils/Icons'
 import { useGlobalContext } from '../../context/globalContext'
+import Loader from '../Loader/Loader'
+import { toast } from 'react-toastify'
 
 export default function BonusTable({
   classNameSlotName,
@@ -21,13 +23,14 @@ export default function BonusTable({
   errorForm
 }) {
   const [errorBonus, setErrorBonus] = useState({})
+  const [loading, setLoading] = useState(false)
 
-  const { bonusList, setBonusList, deleteBonusItem } = useGlobalContext()
+  const { bonusList, deleteBonusItem, addBonus, getBonuses, session } =
+    useGlobalContext()
 
-  const generateRandomId = () => {
-    const randomNum = Math.floor(Math.random() * 10000)
-    return `bonus_${randomNum}`
-  }
+  useEffect(() => {
+    if (session !== null) getBonuses()
+  }, [session])
 
   const validation = () => {
     let error = {}
@@ -55,33 +58,48 @@ export default function BonusTable({
     })
   }
 
-  const editData = (el) => {
-    deleteBonusItem(el.id)
+  const editData = async (el) => {
+    await deleteBonusItem(el.id)
 
     document.getElementById('slotName-input').value = el.slotName
     document.getElementById('bet-input').value = el.bet
 
-    setBonusData({ slotName: el.slotName, bet: el.bet })
+    setBonusData({
+      slotName: el.slotName,
+      bet: el.bet,
+      win: null,
+      odd: null,
+      user_id: session?.user.id || session?.session.user.id
+    })
   }
 
-  const addBonus = () => {
+  const handleAdd = async () => {
+    setLoading(true)
     const errors = validation()
     setErrorBonus(errors)
 
-    if (!Object.keys(errors).length) {
-      const id = generateRandomId()
-
-      const data = {
-        id,
-        slotName,
-        bet
-      }
-
-      setBonusList([...bonusList, data])
+    if (Object.keys(errors).length === 0) {
+      const { error } = await addBonus(bonusData)
       setClassNameSlotName(false)
       setClassNameBet(false)
       setBonusData(initialBonusData)
+      setErrorBonus({})
+
+      if (error) {
+        toast.error(error.message, {
+          position: 'top-right',
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark'
+        })
+      }
     }
+
+    setLoading(false)
   }
 
   return (
@@ -155,7 +173,7 @@ export default function BonusTable({
         </tbody>
       </table>
       {errorForm.bonusList && <ErrorText>{errorForm.bonusList}</ErrorText>}
-      <button type="button" onClick={addBonus} className="button">
+      <button type="button" onClick={handleAdd} className="button">
         <span className="button__text">Agregar Bonus</span>
         <span className="button__icon">{plusIcon}</span>
       </button>
@@ -165,6 +183,7 @@ export default function BonusTable({
         </div>
         <div>{errorBonus.bet && <ErrorText>{errorBonus.bet}</ErrorText>}</div>
       </div>
+      {loading && <Loader customClass="add-bonus-loader" />}
     </BonusTableStyled>
   )
 }
@@ -174,6 +193,10 @@ const BonusTableStyled = styled.div`
   border-radius: 10px;
   height: 100%;
   overflow-y: auto;
+
+  .add-bonus-loader {
+    margin: 20px auto 10px auto;
+  }
 
   .icons-container {
     span {

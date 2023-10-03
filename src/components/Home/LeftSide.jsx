@@ -7,22 +7,24 @@ import BonusTable from './BonusTable'
 import { useGlobalContext } from '../../context/globalContext'
 import StartingBonusTable from './StartingBonusTable'
 
-const initialBonusData = {
-  id: '',
-  slotName: '',
-  bet: '',
-  win: null
-}
-
 export default function LeftSide() {
+  const { session, budget, bonusList, onRun, setOnRun, setReset } =
+    useGlobalContext()
+
+  const initialBonusData = {
+    slotName: '',
+    bet: '',
+    win: null,
+    odd: null,
+    user_id: session?.user.id || session?.session.user.id
+  }
+
   const [classNameBudget, setClassNameBudget] = useState(false)
   const [checked, setChecked] = useState(false)
   const [bonusData, setBonusData] = useState(initialBonusData)
   const [classNameSlotName, setClassNameSlotName] = useState(false)
   const [classNameBet, setClassNameBet] = useState(false)
   const [errorForm, setErrorForm] = useState({})
-
-  const { budget, bonusList, onRun, setOnRun, setReset } = useGlobalContext()
 
   const { slotName, bet } = bonusData
 
@@ -136,7 +138,11 @@ export default function LeftSide() {
             </form>
           </>
         ) : (
-          <StartingBonusTable bonusList={bonusList} />
+          <StartingBonusTable
+            bonusList={bonusList}
+            setChecked={setChecked}
+            setClassNameBudget={setClassNameBudget}
+          />
         )}
       </LeftSideStyled>
     </>

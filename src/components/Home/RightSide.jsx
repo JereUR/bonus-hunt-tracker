@@ -9,7 +9,6 @@ export default function RightSide() {
     useGetAttributesDetails()
 
   const finalResult = totalWin - budget
-
   return (
     <RightSideStyled>
       <div className="data-container">

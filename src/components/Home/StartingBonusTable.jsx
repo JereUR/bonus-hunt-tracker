@@ -6,14 +6,21 @@ import betIcon from '../../assets/bet-icon.png'
 import { arrowBack, coinIcon, targetIcon, winIcon } from '../../utils/Icons'
 import { useGlobalContext } from '../../context/globalContext'
 import CheckBox from '../../utils/CheckBox'
+import { toast } from 'react-toastify'
 
-export default function StartingBonusTable({ bonusList }) {
+export default function StartingBonusTable({
+  bonusList,
+  setChecked,
+  setClassNameBudget
+}) {
   const [winInputs, setWinInputs] = useState(bonusList.map(() => ''))
   const [errorWins, setErrorWins] = useState(bonusList.map(() => null))
+  const [errorFinish, setErrorFinish] = useState('')
   const [checkedWins, setCheckedWins] = useState(bonusList.map(() => false))
   const [classNameWins, setClassNameWins] = useState(bonusList.map(() => false))
 
-  const { updateWin, setOnRun, setReset } = useGlobalContext()
+  const { updateWin, setOnRun, setReset, deleteAllBonus, session, setBudget } =
+    useGlobalContext()
 
   const validation = (index) => {
     let error = ''
@@ -25,6 +32,18 @@ export default function StartingBonusTable({ bonusList }) {
     if (winInputs[index] < 0) {
       error = 'La recompensa no puede ser negativa'
     }
+
+    return error
+  }
+
+  const validationFinish = () => {
+    let error = ''
+
+    bonusList.forEach((bonus) => {
+      if (bonus.win === null) {
+        error = 'Debe completar el Bonus Hunt antes de finalizar.'
+      }
+    })
 
     return error
   }
@@ -57,7 +76,7 @@ export default function StartingBonusTable({ bonusList }) {
     setOnRun(false)
   }
 
-  const addWin = (index) => {
+  const addWin = async (index) => {
     const newCkeckedWins = [...checkedWins]
     newCkeckedWins[index] = !newCkeckedWins[index]
     setCheckedWins(newCkeckedWins)
@@ -71,8 +90,55 @@ export default function StartingBonusTable({ bonusList }) {
       const errors = [...errorWins]
       errors[index] = null
       setErrorWins(errors)
-      const odd = winInputs[index] / bonusList[index].bet
-      updateWin({ id: bonusList[index].id, win: winInputs[index], odd })
+      const odd = Number(winInputs[index] / bonusList[index].bet)
+      const { error } = await updateWin({
+        id: bonusList[index].id,
+        win: winInputs[index],
+        odd
+      })
+
+      if (error) {
+        toast.error(error.message, {
+          position: 'top-right',
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark'
+        })
+      }
+    }
+  }
+
+  const handleFinish = async () => {
+    const err = validationFinish()
+    setErrorFinish(err)
+
+    if (!Object.keys(err).length) {
+      const { error } = await deleteAllBonus(session.user.id)
+      if (error) {
+        toast.error(error.message, {
+          position: 'top-right',
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark'
+        })
+      } else {
+        setOnRun(false)
+        setBudget('')
+        setChecked(false)
+        setClassNameBudget(false)
+      }
+    } else {
+      setTimeout(() => {
+        setErrorFinish('')
+      }, 5000)
     }
   }
 
@@ -108,43 +174,44 @@ export default function StartingBonusTable({ bonusList }) {
                 <td>{index + 1}</td>
                 <td>{item.slotName}</td>
                 <td>$ {item.bet}</td>
-                <td className="input-win">
-                  <div className="input-container">
-                    <input
-                      className={classNameWins[index] ? 'focused' : ''}
-                      type="number"
-                      name={`winInput-${index}`}
-                      id={`win-input-${index}`}
-                      value={winInputs[index]}
-                      onChange={({ target }) =>
-                        handleWinInputChange(index, target.value)
-                      }
-                      onFocus={handleFocus}
-                      onBlur={handleBlur}
-                      disabled={checkedWins[index]}
-                    />
-                    <div className="checkbox">
-                      <CheckBox
-                        checked={checkedWins[index]}
-                        functionClick={() => addWin(index)}
+                {item.win ? (
+                  <td>$ {item.win}</td>
+                ) : (
+                  <td className="input-win">
+                    <div className="input-container">
+                      <input
+                        className={classNameWins[index] ? 'focused' : ''}
+                        type="number"
+                        name={`winInput-${index}`}
+                        id={`win-input-${index}`}
+                        value={winInputs[index]}
+                        onChange={({ target }) =>
+                          handleWinInputChange(index, target.value)
+                        }
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
+                        disabled={checkedWins[index]}
                       />
+                      <div className="checkbox">
+                        <CheckBox
+                          checked={checkedWins[index]}
+                          functionClick={() => addWin(index)}
+                        />
+                      </div>
                     </div>
-                  </div>
-                  {errorWins[index] && (
-                    <ErrorText>{errorWins[index]}</ErrorText>
-                  )}
-                </td>
-                <td>
-                  {checkedWins[index] &&
-                    errorWins[index] === null &&
-                    (winInputs[index] === 0 ? 'x 0' : 'x ' + item.odd)}
-                </td>
+                    {errorWins[index] && (
+                      <ErrorText>{errorWins[index]}</ErrorText>
+                    )}
+                  </td>
+                )}
+                <td>{item.odd ? `x ${item.odd}` : ''}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </BonusTableStyled>
-      <ButtonStyled>
+      {errorFinish !== '' && <ErrorTextFinish>{errorFinish}</ErrorTextFinish>}
+      <ButtonStyled onClick={handleFinish}>
         <span></span>
         <span></span>
         <span></span>
@@ -403,4 +470,9 @@ const ErrorText = styled.p`
   margin-right: 30px;
   font-size: 12px;
   color: var(--error-color);
+`
+
+const ErrorTextFinish = styled(ErrorText)`
+  margin-top: 30px;
+  margin-bottom: -20px;
 `
