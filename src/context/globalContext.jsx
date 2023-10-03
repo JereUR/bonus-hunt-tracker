@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { supabase } from '../services/supabase'
 import {
   addBonusToSupabase,
+  deleteAllBonusFromUser,
   deleteBonusFromSupabase,
   getBonusesFromSupabase,
   updateBonusItemFromSupabase
@@ -23,6 +24,12 @@ export const GlobalProvider = ({ children }) => {
   //Session
 
   useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session.user !== null) {
+        getUserInfo(data.session.user)
+      }
+    })
+
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
 
@@ -46,7 +53,7 @@ export const GlobalProvider = ({ children }) => {
   //Bonuses
 
   const getBonuses = async () => {
-    if (user === null) return
+    if (session.user === null) return
 
     const { error, bonuses } = await getBonusesFromSupabase()
 
@@ -56,13 +63,23 @@ export const GlobalProvider = ({ children }) => {
   }
 
   const addBonus = async (bonus) => {
-    if (user === null) return
+    if (session.user === null) return
 
     const { error } = await addBonusToSupabase(bonus)
 
     if (error === null) {
       getBonuses()
     }
+
+    return { error }
+  }
+
+  const deleteAllBonus = async (id) => {
+    const { error } = await deleteAllBonusFromUser(id)
+
+    if (error === null) getBonuses()
+
+    return { error }
   }
 
   const deleteBonusItem = async (id) => {
@@ -71,40 +88,32 @@ export const GlobalProvider = ({ children }) => {
     if (error === null) getBonuses()
   }
 
-  /*  const deleteBonusItem = (id) => {
-    let newData = bonusList.filter((el) => el.id !== id)
-    setBonusList(newData)
-  }*/
-
   const updateBonusItem = async (id, win, odd) => {
     const { error } = await updateBonusItemFromSupabase(id, win, odd)
 
     if (error === null) {
       getBonuses()
     }
+
+    return { error }
   }
 
-  const updateWin = ({ id, win }) => {
-    setBonusList((prevBonusList) => {
-      return prevBonusList.map((bonus) => {
-        if (bonus.id === id) {
-          let odd
+  const updateWin = async ({ id, win }) => {
+    let odd
 
-          if (win !== null) {
-            odd = (Number(win) / Number(bonus.bet)).toFixed(2)
-          } else {
-            odd = null
-          }
-
-          return {
-            ...bonus,
-            win,
-            odd
-          }
+    bonusList.map((bonus) => {
+      if (bonus.id === id) {
+        if (win !== null) {
+          odd = (Number(win) / Number(bonus.bet)).toFixed(2)
+        } else {
+          odd = null
         }
-        return bonus
-      })
+      }
     })
+
+    const { error } = await updateBonusItem(id, win, odd)
+
+    return { error }
   }
 
   return (
@@ -118,6 +127,7 @@ export const GlobalProvider = ({ children }) => {
         bonusList,
         addBonus,
         deleteBonusItem,
+        deleteAllBonus,
         onRun,
         setOnRun,
         updateWin,

@@ -17,15 +17,17 @@ export const getBonusesFromSupabase = async () => {
     .from('bonuses')
     .select('*')
     .eq('user_id', user.data.user.id)
-    .order('date', { ascending: true })
+    .order('created_at', { ascending: true })
 
   return { error, bonuses }
 }
 
-export const addBonusToSupabase = async (data) => {
+export const addBonusToSupabase = async (bonus) => {
+  const { slotName, bet, win, odd, user_id } = bonus
+
   const { data: bonuses, error } = await supabase
     .from('bonuses')
-    .insert(data)
+    .insert([{ slotName, bet, win, odd, user_id }])
     .select()
 
   return { error, bonuses }
@@ -42,25 +44,21 @@ export const updateBonusItemFromSupabase = async (id, win, odd) => {
 }
 
 export const deleteBonusFromSupabase = async (id) => {
-  try {
-    const { data, error } = await supabase.from('bonuses').delete().eq('id', id)
+  const { data, error } = await supabase.from('bonuses').delete().eq('id', id)
 
-    return { data, error }
-  } catch (error) {
-    console.error('Error al eliminar el bonus:', error.message)
-  }
+  return { data, error }
+}
+
+export const deleteAllBonusFromUser = async (id) => {
+  const { data, error } = await supabase
+    .from('bonuses')
+    .delete()
+    .eq('user_id', id)
+
+  return { data, error }
 }
 
 //Session
-
-export const updateUser = async (data, credentials) => {
-  const { error: errorUpdate } = await supabase
-    .from('auth.users')
-    .update({ name: credentials.name, user_name: credentials.user_name })
-    .eq('id', data.user.id)
-
-  return { errorUpdate }
-}
 
 export const signUpWithEmail = async (credentials) => {
   const { data, error } = await supabase.auth.signUp({
