@@ -8,8 +8,6 @@ export default function RightSide() {
   const { maxWin, maxOdd, currentAvg, requiredAvg, totalWin } =
     useGetAttributesDetails()
 
-  console.log(requiredAvg === 0)
-
   const finalResult = totalWin - budget
   return (
     <RightSideStyled>
