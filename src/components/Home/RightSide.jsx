@@ -8,6 +8,8 @@ export default function RightSide() {
   const { maxWin, maxOdd, currentAvg, requiredAvg, totalWin } =
     useGetAttributesDetails()
 
+  console.log(requiredAvg === 0)
+
   const finalResult = totalWin - budget
   return (
     <RightSideStyled>
@@ -21,8 +23,8 @@ export default function RightSide() {
       </div>
       <div className="data-container">
         <h3>REQUIRED AVG</h3>
-        {requiredAvg ? (
-          <p>{requiredAvg <= 0 ? 'PROFIT' : `x ${requiredAvg}`}</p>
+        {requiredAvg !== null ? (
+          <p>{requiredAvg === 0 ? 'PROFIT' : `x ${requiredAvg}`}</p>
         ) : (
           <p>-</p>
         )}

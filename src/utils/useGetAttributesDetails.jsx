@@ -54,14 +54,18 @@ export default function useGetAttributesDetails() {
 
     if (bonusList.length > 0) {
       if (betMount === 0) {
-        if (totalWin < budget) {
+        if (win < budget) {
           Ravg = 'F'
         } else {
           Ravg = 0
         }
       } else {
         if (onRun) {
-          Ravg = ((Number(budget) - win) / betMount).toFixed(2)
+          if (win >= budget) {
+            Ravg = 0
+          } else {
+            Ravg = ((Number(budget) - win) / betMount).toFixed(2)
+          }
         } else {
           if (budget > 0) Ravg = (Number(budget) / betMount).toFixed(2)
         }
