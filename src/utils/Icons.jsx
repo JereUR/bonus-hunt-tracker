@@ -67,3 +67,4 @@ export const historyIcon = <i className="ti ti-history"></i>
 export const logoutIcon = <i className="ti ti-logout"></i>
 export const dateIcon = <i className="ti ti-calendar-stats"></i>
 export const balanceIcon = <i className="ti ti-scale"></i>
+export const settingsIcon = <i className="ti ti-settings"></i>
