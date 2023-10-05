@@ -38,3 +38,11 @@ input[type='number'] {
 main::-webkit-scrollbar {
   width: 0;
 }
+
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: rgba(30, 208, 240, 0.6);
+}
