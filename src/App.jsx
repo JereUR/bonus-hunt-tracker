@@ -14,7 +14,7 @@ import { DIRECTIONS } from './utils/Direction'
 import History from './components/History/History'
 
 export default function App() {
-  const [active, setActive] = useState('login')
+  const [active, setActive] = useState(DIRECTIONS.LOGIN)
   const { session } = useGlobalContext()
   useUpdateSession({ session, setActive })
 
@@ -35,7 +35,7 @@ export default function App() {
         return (
           <>
             <Header active={active} setActive={setActive} />
-            <History />
+            <History setActive={setActive} />
           </>
         )
     }
