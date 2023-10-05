@@ -3,6 +3,8 @@
   margin: 0;
   padding: 0;
   text-align: center;
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 1.5px;
 
   --button-text-color: #161616;
   --primary-color: rgb(166, 11, 238);
@@ -18,6 +20,11 @@
   --background-default-color: rgba(10, 10, 10, 0.78);
   --check-color: rgb(32, 197, 128);
   --check-color2: rgba(32, 197, 128, 0.8);
+}
+
+input,
+button {
+  font-family: inherit;
 }
 
 /* Ocultar las flechas en un input de tipo number */
