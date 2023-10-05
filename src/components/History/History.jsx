@@ -73,6 +73,7 @@ const HistoryStyled = styled.div`
   background: var(--background-default-color);
   border: 3px solid var(--secondary-color);
   border-radius: 10px;
+  padding: 20px 5px;
   margin: 1rem;
   backdrop-filter: blur(4.5px);
   overflow-x: hidden;
@@ -101,6 +102,10 @@ const HistoryStyled = styled.div`
     }
   }
 
+  tbody tr:hover {
+    background-color: var(--background-default-color2);
+  }
+
   table {
     width: 100%;
     margin-top: 20px;
@@ -108,8 +113,17 @@ const HistoryStyled = styled.div`
     font-size: 20px;
   }
 
+  td {
+    padding: 25px 5px 25px 5px;
+    text-align: center;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
   th {
-    padding: 20px;
+    font-weight: bold;
+    height: 50px;
+    padding: 20px 10px;
+    text-transform: uppercase;
 
     i {
       margin-right: 5px;

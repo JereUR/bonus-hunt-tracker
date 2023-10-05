@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 
 import slotIcon from '../../assets/slot-icon.png'
 import betIcon from '../../assets/bet-icon.png'
-import { editIcon, plusIcon, trashIcon } from '../../utils/Icons'
+import { editIcon, plusIcon, settingsIcon, trashIcon } from '../../utils/Icons'
 import { useGlobalContext } from '../../context/globalContext'
 import Loader from '../Loader/Loader'
 import { toast } from 'react-toastify'
@@ -114,6 +114,7 @@ export default function BonusTable({
             <th>
               <img src={betIcon} alt="bet-icon" /> Apuesta
             </th>
+            <th>{settingsIcon} Edición</th>
           </tr>
         </thead>
         <tbody>
@@ -190,6 +191,7 @@ export default function BonusTable({
 
 const BonusTableStyled = styled.div`
   box-shadow: inset 0px 10px 10px -10px var(--secondary-color2);
+  padding: 20px 5px;
   border-radius: 10px;
   height: 100%;
   overflow-y: auto;
@@ -227,14 +229,37 @@ const BonusTableStyled = styled.div`
     flex: 1;
   }
 
+  tbody tr:hover {
+    background-color: var(--background-default-color2);
+  }
+
+  tbody tr:last-child:hover {
+    background-color: transparent;
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
     font-size: 20px;
+    overflow: hidden;
+  }
+
+  td {
+    padding: 15px 5px 20px 5px;
+    text-align: center;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .input-bonus,
+  .id-container {
+    border: none !important;
   }
 
   th {
-    padding: 20px;
+    font-weight: bold;
+    height: 50px;
+    padding: 20px 10px;
+    text-transform: uppercase;
 
     i {
       margin-right: 5px;
@@ -280,7 +305,7 @@ const BonusTableStyled = styled.div`
   .button {
     position: relative;
     width: 250px;
-    height: 40px;
+    height: 45px;
     font-size: 20px;
     border-radius: 10px;
     margin: 20px auto;

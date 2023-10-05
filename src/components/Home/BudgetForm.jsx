@@ -57,15 +57,15 @@ const BudgetFormStyled = styled.div`
 
     .lock-icon {
       position: absolute;
-      top: -20px;
-      left: 10px;
+      top: -15px;
+      left: -15px;
       font-size: 24px;
     }
 
     .price {
       position: absolute;
-      top: -20px;
-      left: 70px;
+      top: -15px;
+      left: 30px;
       font-size: 24px;
     }
 

@@ -367,7 +367,7 @@ const ButtonStyled = styled.button`
   cursor: pointer;
   border: none;
   color: var(--primary-color);
-  font-size: 16px;
+  font-size: 20px;
   text-decoration: none;
   text-transform: uppercase;
   overflow: hidden;
@@ -479,6 +479,7 @@ const Container = styled.div`
 
 const BonusTableStyled = styled.div`
   box-shadow: inset 0px 10px 10px -10px var(--secondary-color2);
+  padding: 20px 5px;
   border-radius: 10px;
   height: 100%;
   overflow-y: auto;
@@ -492,14 +493,28 @@ const BonusTableStyled = styled.div`
     }
   }
 
+  tbody tr:hover {
+    background-color: var(--background-default-color2);
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
     font-size: 20px;
+    overflow: hidden;
+  }
+
+  td {
+    padding: 15px 5px 20px 5px;
+    text-align: center;
+    border-bottom: 1px solid #f0f0f0;
   }
 
   th {
-    padding: 20px;
+    font-weight: bold;
+    height: 50px;
+    padding: 20px 10px;
+    text-transform: uppercase;
 
     i {
       margin-right: 5px;
@@ -535,7 +550,7 @@ const BonusTableStyled = styled.div`
     justify-content: center;
 
     input {
-      padding: 8px;
+      padding: 3px 10px;
       font-weight: bold;
       border-radius: 5px;
       border: 2px solid var(--secondary-color3);
@@ -554,7 +569,7 @@ const BonusTableStyled = styled.div`
 
   .checkbox {
     margin-left: 10px;
-    margin-top: 9px;
+    margin-top: 5px;
   }
 `
 
