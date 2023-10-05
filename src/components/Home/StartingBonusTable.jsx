@@ -3,10 +3,18 @@ import { useState } from 'react'
 
 import slotIcon from '../../assets/slot-icon.png'
 import betIcon from '../../assets/bet-icon.png'
-import { arrowBack, coinIcon, targetIcon, winIcon } from '../../utils/Icons'
+import {
+  arrowBack,
+  coinIcon,
+  editIcon,
+  targetIcon,
+  winIcon
+} from '../../utils/Icons'
 import { useGlobalContext } from '../../context/globalContext'
 import CheckBox from '../../utils/CheckBox'
 import { toast } from 'react-toastify'
+import useGetAttributesDetails from '../../utils/useGetAttributesDetails'
+import Loader from '../Loader/Loader'
 
 export default function StartingBonusTable({
   bonusList,
@@ -18,9 +26,21 @@ export default function StartingBonusTable({
   const [errorFinish, setErrorFinish] = useState('')
   const [checkedWins, setCheckedWins] = useState(bonusList.map(() => false))
   const [classNameWins, setClassNameWins] = useState(bonusList.map(() => false))
+  const [edits, setEdits] = useState(bonusList.map(() => false))
+  const [loading, setLoading] = useState(false)
 
-  const { updateWin, setOnRun, setReset, deleteAllBonus, session, setBudget } =
-    useGlobalContext()
+  const {
+    updateWin,
+    setOnRun,
+    setReset,
+    deleteAllBonus,
+    session,
+    setBudget,
+    budget,
+    addHistory
+  } = useGlobalContext()
+
+  const { currentAvg, totalWin } = useGetAttributesDetails()
 
   const validation = (index) => {
     let error = ''
@@ -76,6 +96,16 @@ export default function StartingBonusTable({
     setOnRun(false)
   }
 
+  const handleEdit = (index) => {
+    const newCkeckedWins = [...checkedWins]
+    newCkeckedWins[index] = false
+    setCheckedWins(newCkeckedWins)
+
+    const newEdits = [...edits]
+    newEdits[index] = true
+    setEdits(newEdits)
+  }
+
   const addWin = async (index) => {
     const newCkeckedWins = [...checkedWins]
     newCkeckedWins[index] = !newCkeckedWins[index]
@@ -109,6 +139,10 @@ export default function StartingBonusTable({
           theme: 'dark'
         })
       }
+
+      const newEdits = [...edits]
+      newEdits[index] = false
+      setEdits(newEdits)
     }
   }
 
@@ -117,6 +151,7 @@ export default function StartingBonusTable({
     setErrorFinish(err)
 
     if (!Object.keys(err).length) {
+      setLoading(true)
       const { error } = await deleteAllBonus(session.user.id)
       if (error) {
         toast.error(error.message, {
@@ -130,11 +165,35 @@ export default function StartingBonusTable({
           theme: 'dark'
         })
       } else {
-        setOnRun(false)
-        setBudget('')
-        setChecked(false)
-        setClassNameBudget(false)
+        const historyData = {
+          odd: currentAvg,
+          budget,
+          win: totalWin,
+          user_id: session.user.id
+        }
+
+        const { error: errorHistory } = await addHistory(historyData)
+
+        if (errorHistory) {
+          toast.error(errorHistory.message, {
+            position: 'top-right',
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark'
+          })
+        } else {
+          setOnRun(false)
+          setBudget('')
+          setChecked(false)
+          setClassNameBudget(false)
+        }
       }
+
+      setLoading(false)
     } else {
       setTimeout(() => {
         setErrorFinish('')
@@ -174,8 +233,17 @@ export default function StartingBonusTable({
                 <td>{index + 1}</td>
                 <td>{item.slotName}</td>
                 <td>$ {item.bet}</td>
-                {item.win ? (
-                  <td>$ {item.win}</td>
+                {item.win && !edits[index] ? (
+                  <td className="win-td">
+                    <span>$ {item.win}</span>
+                    <div
+                      onClick={() => {
+                        handleEdit(index)
+                      }}
+                    >
+                      {editIcon}
+                    </div>
+                  </td>
                 ) : (
                   <td className="input-win">
                     <div className="input-container">
@@ -218,6 +286,7 @@ export default function StartingBonusTable({
         <span></span>
         Finalizar
       </ButtonStyled>
+      {loading && <Loader customClass="finish-loader" />}
     </Container>
   )
 }
@@ -402,6 +471,10 @@ const Container = styled.div`
       margin-left: 10px;
     }
   }
+
+  .finish-loader {
+    margin: -30px auto auto auto;
+  }
 `
 
 const BonusTableStyled = styled.div`
@@ -435,6 +508,25 @@ const BonusTableStyled = styled.div`
     img {
       width: 20px;
       margin-right: 5px;
+    }
+  }
+
+  .win-td {
+    display: flex;
+    justify-content: center;
+
+    span {
+      width: 60%;
+    }
+
+    i {
+      color: var(--secondary-color3);
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        color: var(--secondary-color);
+      }
     }
   }
 

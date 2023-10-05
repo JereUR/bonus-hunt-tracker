@@ -4,9 +4,11 @@ import PropTypes from 'prop-types'
 import { supabase } from '../services/supabase'
 import {
   addBonusToSupabase,
+  addHistoryToSupabase,
   deleteAllBonusFromUser,
   deleteBonusFromSupabase,
   getBonusesFromSupabase,
+  getHistoriesFromSupabase,
   updateBonusItemFromSupabase
 } from '../services'
 
@@ -16,6 +18,7 @@ export const GlobalProvider = ({ children }) => {
   const [onRun, setOnRun] = useState(false)
   const [budget, setBudget] = useState('')
   const [bonusList, setBonusList] = useState([])
+  const [historyList, setHistoryList] = useState([])
   const [reset, setReset] = useState(false)
   const [session, setSession] = useState(null)
   const [user, setUser] = useState(null)
@@ -116,6 +119,30 @@ export const GlobalProvider = ({ children }) => {
     return { error }
   }
 
+  //Histories
+
+  const getHistories = async () => {
+    if (session.user === null) return
+
+    const { error, histories } = await getHistoriesFromSupabase()
+
+    if (error === null) {
+      setHistoryList(histories)
+    }
+  }
+
+  const addHistory = async (history) => {
+    if (session.user === null) return
+
+    const { error } = await addHistoryToSupabase(history)
+
+    if (error === null) {
+      getHistories()
+    }
+
+    return { error }
+  }
+
   return (
     <GlobalContext.Provider
       value={{
@@ -126,6 +153,9 @@ export const GlobalProvider = ({ children }) => {
         getBonuses,
         bonusList,
         addBonus,
+        getHistories,
+        historyList,
+        addHistory,
         deleteBonusItem,
         deleteAllBonus,
         onRun,

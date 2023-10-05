@@ -58,6 +58,33 @@ export const deleteAllBonusFromUser = async (id) => {
   return { data, error }
 }
 
+//Histories
+
+export const getHistoriesFromSupabase = async () => {
+  const user = await getUserFromSupabase()
+
+  if (user === null || user.data.user === null) return
+
+  const { data: histories, error } = await supabase
+    .from('histories')
+    .select('*')
+    .eq('user_id', user.data.user.id)
+    .order('odd', { ascending: true })
+
+  return { error, histories }
+}
+
+export const addHistoryToSupabase = async (history) => {
+  const { odd, win, budget, user_id } = history
+
+  const { data: histories, error } = await supabase
+    .from('histories')
+    .insert([{ odd, budget, win, user_id }])
+    .select()
+
+  return { error, histories }
+}
+
 //Session
 
 export const signUpWithEmail = async (credentials) => {
