@@ -66,10 +66,11 @@ const NavStyled = styled.nav`
     right: -100px;
     border: 1px solid var(--primary-color);
     border-radius: 10px;
-    transition: all 0.4s ease-in-out;
+    transition: all 0.3s ease-in-out;
 
     &:hover {
       color: var(--primary-color);
+      transform: scale(1.05);
     }
   }
 `
