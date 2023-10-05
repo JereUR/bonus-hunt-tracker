@@ -69,7 +69,7 @@ export const getHistoriesFromSupabase = async () => {
     .from('histories')
     .select('*')
     .eq('user_id', user.data.user.id)
-    .order('odd', { ascending: true })
+    .order('odd', { ascending: false })
 
   return { error, histories }
 }
