@@ -80,7 +80,7 @@ export default function useGetAttributesDetails() {
 
     setRequiredAvg(Ravg)
     setCurrentAvg(Cavg)
-    setTotalWin(win)
+    setTotalWin(win.toFixed(2))
   }, [bonusList, budget, onRun])
 
   return { maxWin, maxOdd, currentAvg, requiredAvg, totalWin }
