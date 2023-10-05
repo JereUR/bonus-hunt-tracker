@@ -65,3 +65,5 @@ export const targetIcon = <i className="ti ti-target-arrow"></i>
 export const homeIcon = <i className="ti ti-home"></i>
 export const historyIcon = <i className="ti ti-history"></i>
 export const logoutIcon = <i className="ti ti-logout"></i>
+export const dateIcon = <i className="ti ti-calendar-stats"></i>
+export const balanceIcon = <i className="ti ti-scale"></i>
