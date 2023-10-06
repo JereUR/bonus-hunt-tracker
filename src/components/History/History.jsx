@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import moment from 'moment'
 import { useEffect } from 'react'
+import { toast } from 'react-toastify'
 
 import { useGlobalContext } from '../../context/globalContext'
 import { balanceIcon, coinIcon, dateIcon, winIcon } from '../../utils/Icons'
@@ -10,7 +11,28 @@ export default function History({ setActive }) {
   const { historyList, getHistories, session } = useGlobalContext()
 
   useEffect(() => {
-    if (session !== null) getHistories()
+    const getInfo = async () => {
+      const { error } = await getHistories()
+
+      return { error }
+    }
+
+    if (session !== null) {
+      const { error } = getInfo()
+
+      if (error) {
+        toast.error(error.message, {
+          position: 'top-right',
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark'
+        })
+      }
+    }
   }, [session])
 
   return (

@@ -1,9 +1,9 @@
 import styled, { keyframes } from 'styled-components'
+import { useEffect, useState } from 'react'
 
 import logo from '../../assets/logo2.png'
 import { useGlobalContext } from '../../context/globalContext'
 import Navigation from './Navigation'
-import { useEffect, useState } from 'react'
 
 export default function Header({ active, setActive }) {
   const [username, setUsername] = useState('')

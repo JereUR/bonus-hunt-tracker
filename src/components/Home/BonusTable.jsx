@@ -1,12 +1,12 @@
 import styled, { keyframes } from 'styled-components'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import slotIcon from '../../assets/slot-icon.png'
 import betIcon from '../../assets/bet-icon.png'
 import { editIcon, plusIcon, settingsIcon, trashIcon } from '../../utils/Icons'
 import { useGlobalContext } from '../../context/globalContext'
 import Loader from '../Loader/Loader'
-import { toast } from 'react-toastify'
 
 export default function BonusTable({
   classNameSlotName,
@@ -59,18 +59,31 @@ export default function BonusTable({
   }
 
   const editData = async (el) => {
-    await deleteBonusItem(el.id)
+    const { error } = await deleteBonusItem(el.id)
 
-    document.getElementById('slotName-input').value = el.slotName
-    document.getElementById('bet-input').value = el.bet
+    if (error) {
+      toast.error(error.message, {
+        position: 'top-right',
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark'
+      })
+    } else {
+      document.getElementById('slotName-input').value = el.slotName
+      document.getElementById('bet-input').value = el.bet
 
-    setBonusData({
-      slotName: el.slotName,
-      bet: el.bet,
-      win: null,
-      odd: null,
-      user_id: session?.user.id || session?.session.user.id
-    })
+      setBonusData({
+        slotName: el.slotName,
+        bet: el.bet,
+        win: null,
+        odd: null,
+        user_id: session?.user.id || session?.session.user.id
+      })
+    }
   }
 
   const handleAdd = async () => {

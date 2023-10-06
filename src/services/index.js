@@ -128,5 +128,7 @@ export const signInWithGithub = async () => {
 }
 
 export const signOutFromSupabase = () => {
-  supabase.auth.signOut()
+  const { error } = supabase.auth.signOut()
+
+  return { error }
 }

@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+
 import { DIRECTIONS } from './Direction'
 
 export default function useUpdateSession({ session, setActive }) {

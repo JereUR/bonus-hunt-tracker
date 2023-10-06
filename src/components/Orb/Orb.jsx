@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components'
+
 import { useWindowSize } from '../../utils/useWindowSize'
 
 export default function Orb() {

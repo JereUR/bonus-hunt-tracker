@@ -11,6 +11,7 @@ import {
   getHistoriesFromSupabase,
   updateBonusItemFromSupabase
 } from '../services'
+import { toast } from 'react-toastify'
 
 const GlobalContext = createContext()
 
@@ -27,19 +28,47 @@ export const GlobalProvider = ({ children }) => {
   //Session
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session.user !== null) {
-        getUserInfo(data.session.user)
+    const { error: errorUser } = supabase.auth.getSession().then(({ data }) => {
+      if (errorUser) {
+        toast.error(errorUser.message, {
+          position: 'top-right',
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark'
+        })
+      } else {
+        if (data.session.user !== null) {
+          getUserInfo(data.session.user)
+        }
       }
     })
 
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
+    const { error: errorSession } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (errorSession) {
+          toast.error(errorSession.message, {
+            position: 'top-right',
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark'
+          })
+        } else {
+          setSession(session)
 
-      if (session !== null) {
-        getUserInfo(session?.user)
+          if (session !== null) {
+            getUserInfo(session?.user)
+          }
+        }
       }
-    })
+    )
   }, [])
 
   const getUserInfo = async (id) => {
@@ -51,6 +80,8 @@ export const GlobalProvider = ({ children }) => {
     if (error === null) {
       setUser(data)
     }
+
+    return { error }
   }
 
   //Bonuses
@@ -63,6 +94,8 @@ export const GlobalProvider = ({ children }) => {
     if (error === null) {
       setBonusList(bonuses)
     }
+
+    return { error }
   }
 
   const addBonus = async (bonus) => {
@@ -89,6 +122,8 @@ export const GlobalProvider = ({ children }) => {
     const { error } = await deleteBonusFromSupabase(id)
 
     if (error === null) getBonuses()
+
+    return { error }
   }
 
   const updateBonusItem = async (id, win, odd) => {
@@ -129,6 +164,8 @@ export const GlobalProvider = ({ children }) => {
     if (error === null) {
       setHistoryList(histories)
     }
+
+    return { error }
   }
 
   const addHistory = async (history) => {

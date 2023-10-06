@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import styled, { keyframes } from 'styled-components'
+import { toast } from 'react-toastify'
 
 import logo from '../../assets/logo2.png'
 import { arrowBack } from '../../utils/Icons'
-import { toast } from 'react-toastify'
 import { signUpWithEmail } from '../../services'
 import { DIRECTIONS } from '../../utils/Direction'
 import Loader from '../Loader/Loader'
@@ -136,20 +136,7 @@ export default function SignUp({ setActive }) {
 
     if (Object.keys(err).length === 0) {
       setLoading(true)
-      const { error /* , errorUpdate */ } = await signUpWithEmail(inputState)
-
-      /* if (errorUpdate) {
-        toast.success(errorUpdate.message, {
-          position: 'top-right',
-          autoClose: 4000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'dark'
-        })
-      } */
+      const { error } = await signUpWithEmail(inputState)
 
       if (error) {
         toast.success(error.message, {
@@ -162,9 +149,7 @@ export default function SignUp({ setActive }) {
           progress: undefined,
           theme: 'dark'
         })
-      }
-
-      if (!error) {
+      } else {
         toast.success(
           'Registro exitoso. Chequea tu email y confirma tu cuenta para poder iniciar sesión. Redirigiendo...',
           {
@@ -178,13 +163,12 @@ export default function SignUp({ setActive }) {
             theme: 'dark'
           }
         )
-      }
 
-      setTimeout(() => {
-        setActive(DIRECTIONS.LOGIN)
-      }, 4000)
-    } else {
-      setInputState(initialState)
+        setTimeout(() => {
+          setInputState(initialState)
+          setActive(DIRECTIONS.LOGIN)
+        }, 4000)
+      }
     }
 
     setLoading(false)

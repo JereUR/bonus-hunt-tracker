@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+
 import { useGlobalContext } from '../context/globalContext'
 
 export default function useGetAttributesDetails() {

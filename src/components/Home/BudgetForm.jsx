@@ -1,4 +1,5 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+
 import CheckBox from '../../utils/CheckBox'
 import { lockIcon } from '../../utils/Icons'
 import { useGlobalContext } from '../../context/globalContext'
@@ -45,6 +46,18 @@ export default function BudgetForm({
     </>
   )
 }
+
+const shake = keyframes`
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20%, 60%{
+    transform: translateX(-5px);
+  }
+  40%, 80% {
+    transform: translateX(5px);
+  }
+  `
 
 const BudgetFormStyled = styled.div`
   display: flex;
@@ -104,4 +117,5 @@ const BudgetFormStyled = styled.div`
 const ErrorText = styled.span`
   font-size: 12px;
   color: var(--error-color);
+  animation: ${shake} 0.6s;
 `

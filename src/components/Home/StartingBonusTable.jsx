@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components'
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 
 import slotIcon from '../../assets/slot-icon.png'
 import betIcon from '../../assets/bet-icon.png'
@@ -12,7 +13,6 @@ import {
 } from '../../utils/Icons'
 import { useGlobalContext } from '../../context/globalContext'
 import CheckBox from '../../utils/CheckBox'
-import { toast } from 'react-toastify'
 import useGetAttributesDetails from '../../utils/useGetAttributesDetails'
 import Loader from '../Loader/Loader'
 
@@ -121,6 +121,7 @@ export default function StartingBonusTable({
       errors[index] = null
       setErrorWins(errors)
       const odd = Number(winInputs[index] / bonusList[index].bet)
+
       const { error } = await updateWin({
         id: bonusList[index].id,
         win: winInputs[index],
@@ -333,6 +334,18 @@ const btnAnim4 = keyframes`
     bottom: 100%;
   }
 `
+
+const shake = keyframes`
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20%, 60%{
+    transform: translateX(-5px);
+  }
+  40%, 80% {
+    transform: translateX(5px);
+  }
+  `
 
 const ButtonBack = styled.button`
   cursor: pointer;
@@ -577,9 +590,11 @@ const ErrorText = styled.p`
   margin-right: 30px;
   font-size: 12px;
   color: var(--error-color);
+  animation: ${shake} 0.6s;
 `
 
 const ErrorTextFinish = styled(ErrorText)`
   margin-top: 30px;
   margin-bottom: -20px;
+  animation: ${shake} 0.6s;
 `
