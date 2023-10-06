@@ -16,6 +16,8 @@ const initialState = {
   confirm_password: ''
 }
 
+const validateEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 export default function SignUp({ setActive }) {
   const [inputState, setInputState] = useState(initialState)
   const [classNameName, setClassNameName] = useState(false)
@@ -100,6 +102,10 @@ export default function SignUp({ setActive }) {
 
     if (email === '') {
       err.email = 'Debe ingresar un email.'
+    }
+
+    if (!validateEmail.test(String(email).toLowerCase())) {
+      err.email = 'Email no válido.'
     }
 
     if (password === '') {
@@ -345,6 +351,8 @@ const ErrorText = styled.span`
   display: flex;
   justify-content: left;
   font-size: 12px;
+  margin-top: -10px;
+  margin-bottom: 5px;
   color: var(--error-color);
   animation: ${shake} 0.6s;
 `

@@ -176,7 +176,7 @@ const LoginStyled = styled.div`
     display: flex;
     align-items: center;
     text-align: center;
-    margin: 50px 0;
+    margin: 20px 0;
 
     span {
       color: var(--primary-color);

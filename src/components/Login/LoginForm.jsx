@@ -11,6 +11,8 @@ const initialState = {
   password: ''
 }
 
+const validateEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 export default function LoginForm({ setActive }) {
   const [inputState, setInputState] = useState(initialState)
   const [classNameEmail, setClassNameEmail] = useState(false)
@@ -25,6 +27,10 @@ export default function LoginForm({ setActive }) {
 
     if (email === '') {
       err.email = 'Ingrese un email.'
+    }
+
+    if (!validateEmail.test(String(email).toLowerCase())) {
+      err.email = 'Email no válido.'
     }
 
     if (password === '') {
@@ -98,11 +104,11 @@ export default function LoginForm({ setActive }) {
           progress: undefined,
           theme: 'dark'
         })
+      } else {
+        setInputState(initialState)
+        setClassNameEmail(false)
+        setClassNamePassword(false)
       }
-    } else {
-      setInputState(initialState)
-      setClassNameEmail(false)
-      setClassNamePassword(false)
     }
 
     setLoading(false)
@@ -146,6 +152,9 @@ export default function LoginForm({ setActive }) {
         </button>
       </form>
       {loading && <Loader customClass="login-loader" />}
+      <p className="recover" onClick={() => setActive(DIRECTIONS.RECOVER)}>
+        ¿Has olvidado la contraseña?
+      </p>
       <p className="signup">
         No tienes cuenta?{' '}
         <span className="a2" onClick={() => setActive(DIRECTIONS.SIGNUP)}>
@@ -360,6 +369,17 @@ const LoginFormStyled = styled.div`
     background: linear-gradient(360deg, transparent, var(--primary-color));
     animation: ${btnAnim4} 1.5s linear infinite;
     animation-delay: 1.125s;
+  }
+
+  .recover {
+    font-size: 11px;
+    color: var(--secondary-color3);
+    margin-bottom: 30px;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--secondary-color);
+    }
   }
 
   .signup {
