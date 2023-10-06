@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components'
 
 import logo from '../../assets/logo2.png'
 import { arrowBack } from '../../utils/Icons'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { signUpWithEmail } from '../../services'
 import { DIRECTIONS } from '../../utils/Direction'
 import Loader from '../Loader/Loader'
@@ -322,6 +322,18 @@ const btnAnim4 = keyframes`
   }
 `
 
+const shake = keyframes`
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20%, 60%{
+    transform: translateX(-5px);
+  }
+  40%, 80% {
+    transform: translateX(5px);
+  }
+  `
+
 const ButtonBack = styled.button`
   cursor: pointer;
   background: none;
@@ -350,6 +362,7 @@ const ErrorText = styled.span`
   justify-content: left;
   font-size: 12px;
   color: var(--error-color);
+  animation: ${shake} 0.6s;
 `
 
 const LoginFormStyled = styled.div`

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { useEffect, useState } from 'react'
 
 import slotIcon from '../../assets/slot-icon.png'
@@ -188,6 +188,18 @@ export default function BonusTable({
     </BonusTableStyled>
   )
 }
+
+const shake = keyframes`
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20%, 60%{
+    transform: translateX(-5px);
+  }
+  40%, 80% {
+    transform: translateX(5px);
+  }
+  `
 
 const BonusTableStyled = styled.div`
   box-shadow: inset 0px 10px 10px -10px var(--secondary-color2);
@@ -380,4 +392,5 @@ const BonusTableStyled = styled.div`
 const ErrorText = styled.span`
   font-size: 12px;
   color: var(--error-color);
+  animation: ${shake} 0.6s;
 `

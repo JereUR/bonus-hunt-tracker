@@ -199,6 +199,18 @@ const btnAnim4 = keyframes`
   }
 `
 
+const shake = keyframes`
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20%, 60%{
+    transform: translateX(-5px);
+  }
+  40%, 80% {
+    transform: translateX(5px);
+  }
+  `
+
 const ErrorText = styled.span`
   display: flex;
   margin-top: -20px;
@@ -206,6 +218,7 @@ const ErrorText = styled.span`
   justify-content: left;
   font-size: 12px;
   color: var(--error-color);
+  animation: ${shake} 0.6s;
 `
 
 const LoginFormStyled = styled.div`
