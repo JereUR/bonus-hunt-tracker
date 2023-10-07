@@ -12,32 +12,42 @@ import useUpdateSession from './utils/useUpdateSession'
 import Header from './components/Header/Header'
 import { DIRECTIONS } from './utils/Direction'
 import History from './components/History/History'
+import EmailForm from './components/Recover/EmailForm'
+import PasswordForm from './components/Recover/PasswordForm'
 
 export default function App() {
   const [active, setActive] = useState(DIRECTIONS.LOGIN)
   const { session } = useGlobalContext()
   useUpdateSession({ session, setActive })
+  const urlParams = new URLSearchParams(window.location.search)
+  const token = urlParams.get('token')
 
   const displayData = () => {
-    switch (active) {
-      case DIRECTIONS.LOGIN:
-        return <Login setActive={setActive} />
-      case DIRECTIONS.SIGNUP:
-        return <SignUp setActive={setActive} />
-      case DIRECTIONS.HOME:
-        return (
-          <>
-            <Header active={active} setActive={setActive} />
-            <Home />
-          </>
-        )
-      case DIRECTIONS.HISTORY:
-        return (
-          <>
-            <Header active={active} setActive={setActive} />
-            <History setActive={setActive} />
-          </>
-        )
+    if (!token) {
+      switch (active) {
+        case DIRECTIONS.LOGIN:
+          return <Login setActive={setActive} />
+        case DIRECTIONS.SIGNUP:
+          return <SignUp setActive={setActive} />
+        case DIRECTIONS.RECOVER:
+          return <EmailForm setActive={setActive} />
+        case DIRECTIONS.HOME:
+          return (
+            <>
+              <Header active={active} setActive={setActive} />
+              <Home />
+            </>
+          )
+        case DIRECTIONS.HISTORY:
+          return (
+            <>
+              <Header active={active} setActive={setActive} />
+              <History setActive={setActive} />
+            </>
+          )
+      }
+    } else {
+      return <PasswordForm setActive={setActive} token={token} />
     }
   }
 
