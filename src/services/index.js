@@ -132,3 +132,18 @@ export const signOutFromSupabase = () => {
 
   return { error }
 }
+
+export const recoverPassword = async (email) => {
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email)
+  console.log(data)
+
+  return { error }
+}
+
+export const updateUserPassword = async ({ password }) => {
+  const { error } = await supabase.auth.updateUser({
+    password
+  })
+
+  return { error }
+}
