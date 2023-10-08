@@ -66,7 +66,7 @@ export default function History({ setActive }) {
                     <td>$ {item.budget}</td>
                     <td>$ {item.win}</td>
                     <td className={balance < 0 ? 'loss' : 'win'}>
-                      {balance < 0 ? `- $ ${balanceAbs}` : balanceAbs}
+                      {balance < 0 ? `- $ ${balanceAbs}` : `+ $ ${balanceAbs}`}
                     </td>
                   </tr>
                 )
