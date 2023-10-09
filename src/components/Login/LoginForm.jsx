@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { toast } from 'react-toastify'
 
@@ -23,6 +23,16 @@ export default function LoginForm({ setActive }) {
   const [viewPassword, setViewPassword] = useState(false)
 
   const { email, password } = inputState
+
+  useEffect(() => {
+    if (email !== '') {
+      setClassNameEmail(true)
+    }
+
+    if (password !== '') {
+      setClassNamePassword(true)
+    }
+  }, [email, password])
 
   const validation = () => {
     let err = {}
