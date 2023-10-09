@@ -14,6 +14,7 @@ import { DIRECTIONS } from './utils/Direction'
 import History from './components/History/History'
 import EmailForm from './components/Recover/EmailForm'
 import PasswordForm from './components/Recover/PasswordForm'
+import Footer from './components/Footer/Footer'
 
 export default function App() {
   const [active, setActive] = useState(DIRECTIONS.LOGIN)
@@ -36,6 +37,7 @@ export default function App() {
             <>
               <Header active={active} setActive={setActive} />
               <Home />
+              <Footer />
             </>
           )
         case DIRECTIONS.HISTORY:
@@ -43,6 +45,7 @@ export default function App() {
             <>
               <Header active={active} setActive={setActive} />
               <History setActive={setActive} />
+              <Footer />
             </>
           )
       }
