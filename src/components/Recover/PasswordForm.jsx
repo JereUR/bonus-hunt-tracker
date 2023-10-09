@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import { updateUserPassword } from '../../services'
 import { DIRECTIONS } from '../../utils/Direction'
 import Loader from '../Loader/Loader'
+import { EyeIcon, noEyeIcon } from '../../utils/Icons'
 
 const initialState = {
   password: '',
@@ -18,6 +19,7 @@ export default function PasswordForm({ setActive }) {
     useState(false)
   const [errorForm, setErrorForm] = useState({})
   const [loading, setLoading] = useState(false)
+  const [viewPassword, setViewPassword] = useState(false)
 
   const { password, confirm_password } = inputState
 
@@ -131,11 +133,20 @@ export default function PasswordForm({ setActive }) {
             onBlur={({ target }) => handleBlur(target.name)}
             value={password}
             name="password"
-            type="password"
+            type={viewPassword ? 'text' : 'password'}
             onChange={handleInput('password')}
           />
           {errorForm.password && <ErrorText>{errorForm.password}</ErrorText>}
           <label>Contraseña</label>
+          <span
+            type="button"
+            className={
+              classNamePassword ? 'btn-show-pass focus' : 'btn-show-pass'
+            }
+            onClick={() => setViewPassword(!viewPassword)}
+          >
+            {viewPassword ? noEyeIcon : EyeIcon}
+          </span>
         </div>
         <div className="user-box">
           <input
@@ -144,13 +155,22 @@ export default function PasswordForm({ setActive }) {
             onBlur={({ target }) => handleBlur(target.name)}
             value={confirm_password}
             name="confirm_password"
-            type="password"
+            type={viewPassword ? 'text' : 'password'}
             onChange={handleInput('confirm_password')}
           />
           {errorForm.confirm_password && (
             <ErrorText>{errorForm.confirm_password}</ErrorText>
           )}
           <label>Confirmar contraseña</label>
+          <span
+            type="button"
+            className={
+              classNamePasswordConfirm ? 'btn-show-pass focus' : 'btn-show-pass'
+            }
+            onClick={() => setViewPassword(!viewPassword)}
+          >
+            {viewPassword ? noEyeIcon : EyeIcon}
+          </span>
         </div>
         <button className="recover-btn">
           <span></span>
@@ -270,6 +290,17 @@ const PasswordFormStyled = styled.div`
 
   .user-box {
     position: relative;
+
+    .btn-show-pass {
+      position: absolute;
+      top: 15%;
+      right: 20px;
+      transform: translateY(-50%);
+      border: none !important;
+      font-size: 1.5rem;
+      background-color: transparent;
+      cursor: pointer;
+    }
   }
 
   .user-box input {

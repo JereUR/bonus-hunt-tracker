@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import { signInWithEmail } from '../../services'
 import Loader from '../Loader/Loader'
 import { DIRECTIONS } from '../../utils/Direction'
+import { EyeIcon, noEyeIcon } from '../../utils/Icons'
 
 const initialState = {
   email: '',
@@ -19,6 +20,7 @@ export default function LoginForm({ setActive }) {
   const [classNamePassword, setClassNamePassword] = useState(false)
   const [errorForm, setErrorForm] = useState({})
   const [loading, setLoading] = useState(false)
+  const [viewPassword, setViewPassword] = useState(false)
 
   const { email, password } = inputState
 
@@ -137,11 +139,20 @@ export default function LoginForm({ setActive }) {
             onBlur={({ target }) => handleBlur(target.name)}
             value={password}
             name="password"
-            type="password"
+            type={viewPassword ? 'text' : 'password'}
             onChange={handleChange}
           />
           {errorForm.password && <ErrorText>{errorForm.password}</ErrorText>}
           <label>Contraseña</label>
+          <span
+            type="button"
+            className={
+              classNamePassword ? 'btn-show-pass focus' : 'btn-show-pass'
+            }
+            onClick={() => setViewPassword(!viewPassword)}
+          >
+            {viewPassword ? noEyeIcon : EyeIcon}
+          </span>
         </div>
         <button>
           <span></span>
@@ -247,6 +258,17 @@ const LoginFormStyled = styled.div`
 
   .user-box {
     position: relative;
+
+    .btn-show-pass {
+      position: absolute;
+      top: 15%;
+      right: 20px;
+      transform: translateY(-50%);
+      border: none !important;
+      font-size: 1.5rem;
+      background-color: transparent;
+      cursor: pointer;
+    }
   }
 
   .user-box input {
@@ -275,7 +297,7 @@ const LoginFormStyled = styled.div`
   .user-box .focus ~ label {
     top: -20px;
     left: 0;
-    color: var(--primary-color2);
+    color: var(--primary-color);
     font-size: 14px;
   }
 
