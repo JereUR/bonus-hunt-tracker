@@ -19,6 +19,20 @@ export default function Orb() {
     }
   `
 
+  const moveOrbResponsive = keyframes`
+    0% {
+      transform: translate(0, 0);
+    }
+
+    50% {
+      transform: translate(${width / 1.3}px, ${height / 2.5}px);
+    }
+
+    100% {
+      transform: translate(0, 0);
+    }
+  `
+
   const OrbStyled = styled.div`
     width: 70vh;
     height: 70vh;
@@ -33,6 +47,12 @@ export default function Orb() {
     );
     filter: blur(400px);
     animation: ${moveOrb} 15s alternate linear infinite;
+
+    @media screen and (max-width: 480px) {
+      width: 40vh;
+      height: 40vh;
+      animation: ${moveOrbResponsive} 10s alternate linear infinite;
+    }
   `
 
   return <OrbStyled width={width} height={height} />

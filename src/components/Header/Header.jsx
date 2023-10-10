@@ -79,4 +79,31 @@ const HeaderStyled = styled.header`
       margin-right: 3vw;
     }
   }
+
+  //Responsive Design
+
+  @media screen and (max-width: 480px) {
+    h2 {
+      font-size: 20px;
+    }
+
+    h3 {
+      font-size: 18px;
+    }
+
+    .header-container {
+      display: block;
+      margin: auto;
+    }
+
+    .logo-container {
+      img {
+        width: 220px;
+      }
+    }
+
+    .presentation {
+      margin: 30px auto;
+    }
+  }
 `

@@ -26,12 +26,12 @@ export default function EmailForm({ setActive }) {
   const validation = () => {
     let err = ''
 
-    if (email === '') {
-      err = 'Debe ingresar un email.'
-    }
-
     if (!validateEmail.test(String(email).toLowerCase())) {
       err = 'Email no válido.'
+    }
+
+    if (email === '') {
+      err = 'Debe ingresar un email.'
     }
 
     return err
@@ -42,9 +42,8 @@ export default function EmailForm({ setActive }) {
 
     const err = validation()
     setErrorForm(err)
-    setRecSent(true)
 
-    if (Object.keys(err).length === 0) {
+    if (err === '') {
       setLoading(true)
       const { error } = await recoverPassword(email)
 
@@ -63,9 +62,9 @@ export default function EmailForm({ setActive }) {
         setEmail('')
         setRecSent(true)
       }
-    }
 
-    setLoading(false)
+      setLoading(false)
+    }
   }
 
   return (
@@ -73,6 +72,7 @@ export default function EmailForm({ setActive }) {
       <ButtonBack onClick={() => setActive(DIRECTIONS.LOGIN)}>
         {arrowBack} <span>Volver al inicio</span>
       </ButtonBack>
+
       <h1>Recuperar Contraseña</h1>
       {recSent ? (
         <div className="recover-sent">
@@ -188,6 +188,12 @@ const ButtonBack = styled.button`
     width: 10vw;
     margin-left: 10px;
     font-weight: bold;
+
+    //Responsive Design
+
+    @media screen and (max-width: 480px) {
+      width: 30vw;
+    }
   }
 
   &:hover {
@@ -211,7 +217,7 @@ const EmailFormStyled = styled.div`
   top: 50%;
   left: 50%;
   width: 500px;
-  height: 60vh;
+  height: auto;
   padding: 100px 60px 40px 60px;
   margin: 20px auto;
   transform: translate(-50%, -55%);
@@ -221,6 +227,10 @@ const EmailFormStyled = styled.div`
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
   border-radius: 10px;
   overflow-y: auto;
+
+  form {
+    margin: auto 0;
+  }
 
   h1 {
     color: var(--primary-color);
@@ -398,24 +408,6 @@ const EmailFormStyled = styled.div`
     margin-bottom: -25px;
   }
 
-  p:last-child {
-    color: #aaa;
-    font-size: 14px;
-  }
-
-  p.a2 {
-    cursor: pointer;
-    margin-left: 5px;
-    color: #fff;
-    text-decoration: none;
-  }
-
-  p.a2:hover {
-    background: transparent;
-    color: #aaa;
-    border-radius: 5px;
-  }
-
   &::-webkit-scrollbar {
     width: 10px;
   }
@@ -423,5 +415,17 @@ const EmailFormStyled = styled.div`
   &::-webkit-scrollbar-thumb {
     background-color: var(--primary-color3);
     border-radius: 5px;
+  }
+
+  //Responsive Design
+
+  @media screen and (max-width: 480px) {
+    width: 90%;
+    height: auto;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
   }
 `

@@ -59,3 +59,10 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-thumb {
   background-color: rgba(30, 208, 240, 0.6);
 }
+
+@media screen and (max-width: 480px) {
+  body::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+}

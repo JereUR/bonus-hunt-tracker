@@ -442,4 +442,16 @@ const PasswordFormStyled = styled.div`
     background-color: var(--primary-color3);
     border-radius: 5px;
   }
+
+  //Responsive Design
+
+  @media screen and (max-width: 480px) {
+    width: 90%;
+    height: auto;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+  }
 `

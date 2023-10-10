@@ -37,12 +37,12 @@ export default function LoginForm({ setActive }) {
   const validation = () => {
     let err = {}
 
-    if (email === '') {
-      err.email = 'Ingrese un email.'
-    }
-
     if (!validateEmail.test(String(email).toLowerCase())) {
       err.email = 'Email no válido.'
+    }
+
+    if (email === '') {
+      err.email = 'Ingrese un email.'
     }
 
     if (password === '') {
@@ -437,5 +437,10 @@ const LoginFormStyled = styled.div`
     background: transparent;
     color: var(--primary-color);
     border-radius: 5px;
+  }
+
+  //Responsive design
+
+  @media screen and (max-width: 480px) {
   }
 `

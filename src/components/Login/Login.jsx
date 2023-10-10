@@ -200,4 +200,11 @@ const LoginStyled = styled.div`
     background-color: var(--primary-color3);
     border-radius: 5px;
   }
+
+  //Responsive Design
+
+  @media screen and (max-width: 480px) {
+    width: 90%;
+    height: 90%;
+  }
 `

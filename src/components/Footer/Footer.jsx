@@ -119,4 +119,23 @@ const FooterStyled = styled.footer`
       }
     }
   }
+
+  //Responsive Design
+
+  @media screen and (max-width: 480px) {
+    display: block;
+
+    .social-container {
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .created-by-container {
+      margin-bottom: 20px;
+    }
+
+    .img-container {
+      justify-content: center;
+    }
+  }
 `

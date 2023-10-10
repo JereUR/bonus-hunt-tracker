@@ -101,12 +101,12 @@ export default function SignUp({ setActive }) {
       err.user_name = 'El nombre de usuario no debe exceder los 15 caracteres.'
     }
 
-    if (email === '') {
-      err.email = 'Debe ingresar un email.'
-    }
-
     if (!validateEmail.test(String(email).toLowerCase())) {
       err.email = 'Email no válido.'
+    }
+
+    if (email === '') {
+      err.email = 'Debe ingresar un email.'
     }
 
     if (password === '') {
@@ -602,5 +602,18 @@ const LoginFormStyled = styled.div`
   &::-webkit-scrollbar-thumb {
     background-color: var(--primary-color3);
     border-radius: 5px;
+  }
+
+  //Responsive Design
+
+  @media screen and (max-width: 480px) {
+    width: 90%;
+    height: 90%;
+    padding: 100px 20px 40px 20px;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
   }
 `

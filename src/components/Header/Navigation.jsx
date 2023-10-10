@@ -73,4 +73,28 @@ const NavStyled = styled.nav`
       transform: scale(1.05);
     }
   }
+
+  //Responsive Design
+
+  @media screen and (max-width: 480px) {
+    margin-top: -10px;
+
+    .menu-items {
+      display: block;
+
+      .btn-nav {
+        margin-bottom: 15px;
+        width: max-content;
+
+        span {
+          font-size: 15px;
+        }
+      }
+    }
+
+    .logout {
+      right: -130px;
+      margin-top: 20px;
+    }
+  }
 `

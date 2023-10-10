@@ -267,6 +267,12 @@ const BonusTableStyled = styled.div`
     border-collapse: collapse;
     font-size: 20px;
     overflow: hidden;
+
+    //Responsive Design
+
+    @media screen and (max-width: 480px) {
+      font-size: 15px;
+    }
   }
 
   td {
@@ -300,6 +306,12 @@ const BonusTableStyled = styled.div`
     p {
       font-size: 20px;
       margin-top: 5px;
+
+      //Responsive Design
+
+      @media screen and (max-width: 480px) {
+        font-size: 15px;
+      }
     }
 
     p.focus {

@@ -17,4 +17,11 @@ const HomeStyled = styled.div`
   height: 90vh;
   padding: 2rem;
   overflow-y: hidden;
+
+  //Responsive Design
+
+  @media screen and (max-width: 480px) {
+    display: block;
+    overflow-y: auto;
+  }
 `
