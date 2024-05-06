@@ -30,7 +30,7 @@ export default function Footer() {
         </div>
         <div>
           <a
-            href="https://personalportfoliojdv.vercel.app/"
+            href="https://jeremiasdvportfolio.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
           >
