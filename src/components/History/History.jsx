@@ -56,12 +56,12 @@ export default function History({ setActive }) {
             <tbody>
               {historyList?.map((item, index) => {
                 const balance = item.win - item.budget
-                const balanceAbs = Math.abs(balance)
+                const balanceAbs = Math.abs(balance).toFixed(2)
 
                 return (
                   <tr key={item.id}>
                     <td>{index + 1}</td>
-                    <td>x {item.odd}</td>
+                    <td>x {item.odd.toFixed(2)}</td>
                     <td>{moment(item.created_at).format('DD-MM-YYYY')}</td>
                     <td>$ {item.budget}</td>
                     <td>$ {item.win}</td>

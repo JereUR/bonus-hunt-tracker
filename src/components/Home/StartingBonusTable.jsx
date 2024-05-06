@@ -273,7 +273,7 @@ export default function StartingBonusTable({
                     )}
                   </td>
                 )}
-                <td>{item.odd ? `x ${item.odd}` : ''}</td>
+                <td>{item.odd ? `x ${item.odd.toFixed(2)}` : ''}</td>
               </tr>
             ))}
           </tbody>
